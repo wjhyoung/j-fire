@@ -1,0 +1,97 @@
+/* Set basic styles */
+
+html {
+    background-color: #f2e8f7;
+}
+
+body {
+    font-family: DIN Next W01, Arial, Helvetica Neue, helvetica, sans-serif;
+}
+
+/* @media screen and (max-width: 390px) { */
+
+h1 {
+    margin: 0px;
+    padding: 10px;
+    text-align: left;
+    color: #0D0D0D;
+    font-size: 3em;
+    font-weight: 400;
+    /* background-color: #F2F2F2; */
+}
+
+h2 {
+    margin: 0px;
+    padding: 10px;
+    text-align: left;
+    color: #0D0D0D;
+    font-size: 2em;
+    font-weight: 400;
+
+}
+
+a {
+    outline: none;
+    text-decoration: none;
+    padding: 2px 1px 0;
+}
+
+a:link {
+    color: #030307;
+}
+
+a:visited {
+    color: #030307;
+}
+
+a:focus {
+    border-bottom: 1px solid;
+    background: #bae498;
+}
+
+a:hover {
+    border-bottom: 1px solid;
+    background: #cdfeaa;
+}
+
+a:active {
+    background: #265301;
+    color: #cdfeaa;
+}
+
+.topNav {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    margin: 0px;
+    padding: 10px;
+    font-style: italic;
+
+}
+
+.bottomNav {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    margin: 0px;
+    padding: 10px;
+}
+
+.bio {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    margin: 0px;
+    padding: 10px;
+
+}
+
+img.center {
+    display: block;
+    margin: 0 auto;
+    width: 98%;
+    margin: 2px;
+    padding: 2px;
+}
+
+/* } */
