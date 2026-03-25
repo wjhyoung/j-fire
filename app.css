@@ -94,4 +94,30 @@ img.center {
     padding: 2px;
 }
 
-/* } */
+/* Target main splash page 
+
+Color picker A-D:   #8D41D9
+                    #41D9D3
+                    #5C2781
+                    #DBD3C4
+                    #C7DBB8
+
+*/
+
+
+
+body {
+    background-color:#8D41D9;
+}
+
+header {
+    background-color: #41D9D3;
+}
+
+footer {
+    background-color: #5C2781;
+}
+
+.main {
+        background-color:#ffffff;
+}
