@@ -1,7 +1,7 @@
 // Greet the console
 
 console.log("Hello World!!! It's me, your ghost")
-console.log("Dishing out on local network 8891 -- joeliecakes")
+console.log("Dishing out on local network 8088 -- joeliecakes")
 
 // Sign-up form handling
 document.addEventListener('DOMContentLoaded', function() {
