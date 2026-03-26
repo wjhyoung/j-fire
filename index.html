@@ -12,23 +12,87 @@
 </head>
 
 <body>
-    <header class="main">
+    <header>
         <nav><a href="/index.html">Home</a></nav>
     </header>
-    <body class="main">
-        <h1>Sign up for J Fire</h1>
-        <p>J Fire is a free, user friendly financial dashboard for clinical research</p>
-        <h2>Sign in</h2>
-        <h2>Sign up</h2>
-    </body>
-    <footer class="main">
+    <main>
+        <!-- Main landing page -->
+        <section id="main-landing">
+            <h1>Enter a protocol - J Fire</h1>
+            <p>J Fire is a free, user friendly financial dashboard for clinical research</p>
+        </section>
+        <section id="sign-up">
+            <h2>Sign up</h2>
+            <form action="" method="post" class="form-example">
+                <div class="form-example">
+                    <label for="username">Username: </label>
+                    <input type="text" name="username" id="username" required />
+                </div>
+                <div class="form-example">
+                    <label for="password">Password: </label>
+                    <input type="password" name="password" id="password" required />
+                </div>
+                <div class="form-example">
+                    <label for="email">Email for verification: </label>
+                    <input type="email" name="email" id="email" required />
+                </div>
+                <div class="form-example">
+                    <input type="submit" value="Sign Up" />
+                </div>
+            </form>
+        </section>
+        <section id="sign-in">
+            <h2>Sign in to J Fire</h2>
+            <form action="" method="post" class="form-example signin-form">
+                <div class="form-example">
+                    <label for="signin-username">Username: </label>
+                    <input type="text" name="username" id="signin-username" required />
+                </div>
+                <div class="form-example">
+                    <label for="signin-password">Password: </label>
+                    <input type="password" name="password" id="signin-password" required />
+                </div>
+                <div class="form-example">
+                    <input type="submit" value="Sign In" />
+                </div>
+            </form>
+        </section>
+        <section>
+            <h2>Budget Entry</h2>
+            <form action="" method="post" class="form-example budget-form">
+                <div class="form-example">
+                    <label for="budget-name">Budget Name: </label>
+                    <input type="text" name="budget-name" id="budget-name" required />
+                </div>
+                <div class="form-example">
+                    <label for="fixed-costs">Fixed Costs (one per line): </label>
+                    <textarea name="fixed-costs" id="fixed-costs" rows="5" placeholder="e.g. Rent: 1000&#10;Utilities: 200"></textarea>
+                </div>
+                <div class="form-example">
+                    <label for="variable-costs">Variable Costs (one per line): </label>
+                    <textarea name="variable-costs" id="variable-costs" rows="5" placeholder="e.g. Supplies: 500&#10;Travel: 300"></textarea>
+                </div>
+                <div class="form-example">
+                    <input type="submit" value="Save Budget" />
+                </div>
+            </form>
+        </section>
+         <section id="budget-builder">
+            <h2>Study set-up</h2>
+            <p>Build a clinical trial budget from the protocol up</p>
+            <form action=""></form>
+         </section>
+    </main>
+    <footer>
         <p>Copyright 2026 wjhyoung</p>
     </footer>
 
-
-    <!-- Link script -->
-
     <script src="script.js"></script>
+</body>
+
+</html>
+
+<script src="script.js"></script>
 
 </body>
 

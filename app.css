@@ -1,7 +1,7 @@
 /* Set basic styles */
 
 html {
-    background-color: #f2e8f7;
+    background-color: #ffffff;
 }
 
 body {
@@ -94,10 +94,54 @@ img.center {
     padding: 2px;
 }
 
-/* Target main splash page 
+/* Form styles */
 
-Color picker A-D:   #8D41D9
-                    #41D9D3
+.form-example {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-width: 400px;
+    margin: 20px 0;
+}
+
+.form-example div {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-example label {
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.form-example input {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+.form-example textarea {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    resize: vertical;
+}
+
+.form-example input[type="submit"] {
+    background-color: #41D9D3;
+    color: white;
+    border: none;
+    cursor: pointer;
+    padding: 10px;
+    font-size: 18px;
+    margin-top: 10px;
+}
+
+.form-example input[type="submit"]:hover {
+    background-color: #8D41D9;
+}
                     #5C2781
                     #DBD3C4
                     #C7DBB8
@@ -106,8 +150,8 @@ Color picker A-D:   #8D41D9
 
 
 
-body {
-    background-color:#8D41D9;
+main {
+    background-color: #8D41D9;
 }
 
 header {
@@ -118,6 +162,22 @@ footer {
     background-color: #5C2781;
 }
 
-.main {
-        background-color:#ffffff;
+/* Sign-up form basic styles */
+
+form.form-example {
+    display: table;
+}
+
+div.form-example {
+    display: table-row;
+}
+
+label,
+input {
+    display: table-cell;
+    margin-bottom: 10px;
+}
+
+label {
+    padding-right: 10px;
 }
