@@ -1,99 +1,187 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<!-- ### HTML Page for J Fire - welcome to the code... ### -->
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Enter a protocol - J Fire</title>
-    <link rel="stylesheet" href="app.css">
+    <!-- ========================================
+         Document Metadata
+         ======================================== -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <meta name="description" content="J Fire - A free, user-friendly financial dashboard for clinical research" />
+    <meta name="keywords" content="clinical research, budget, financial dashboard" />
+    <meta name="author" content="wjhyoung" />
+    <meta name="theme-color" content="#41D9D3" />
+    
+    <!-- ========================================
+         Page Title
+         ======================================== -->
+    <title>J Fire - Financial Dashboard for Clinical Research</title>
+    
+    <!-- ========================================
+         Stylesheets
+         ======================================== -->
+    <link rel="stylesheet" href="app.css" type="text/css" />
+    
+    <!-- ========================================
+         Favicon & App Icons
+         ======================================== -->
+    <!-- <link rel="icon" href="favicon.ico" /> -->
+    <!-- <link rel="apple-touch-icon" href="apple-touch-icon.png" /> -->
+    
+    <!-- ========================================
+         Preconnect to External Resources
+         ======================================== -->
+    <!-- <link rel="preconnect" href="https://fonts.googleapis.com" /> -->
+    <!-- <link rel="preconnect" href="https://cdn.example.com" /> -->
+    
+    <!-- ========================================
+         Open Graph Meta Tags (Social Media)
+         ======================================== -->
+    <meta property="og:title" content="J Fire - Financial Dashboard for Clinical Research" />
+    <meta property="og:description" content="A free, user-friendly financial dashboard for clinical research" />
+    <meta property="og:type" content="website" />
+    <!-- <meta property="og:image" content="og-image.png" /> -->
+    <!-- <meta property="og:url" content="https://jfire.com" /> -->
+    
+    <!-- ========================================
+         Twitter Card Meta Tags
+         ======================================== -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <!-- <meta name="twitter:creator" content="@jfire" /> -->
 </head>
 
 <body>
-    <header>
-        <nav><a href="/index.html">Home</a></nav>
+    <!-- ========================================
+         Skip to Main Content Link (Accessibility)
+         ======================================== -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    
+    <!-- ========================================
+         Header & Navigation
+         ======================================== -->
+    <header role="banner">
+        <nav role="navigation" aria-label="Main Navigation">
+            <ul>
+                <li><a href="#main-content">Home</a></li>
+                <li><a href="#sign-up">Sign Up</a></li>
+                <li><a href="#sign-in">Sign In</a></li>
+                <li><a href="#budget-entry">Budget</a></li>
+            </ul>
+        </nav>
     </header>
-    <main>
-        <!-- Main landing page -->
-        <section id="main-landing">
+    
+    <!-- ========================================
+         Main Content
+         ======================================== -->
+    <main id="main-content" role="main">
+        <!-- Hero Section -->
+        <section id="main-landing" class="hero-section">
             <h1>Enter a protocol - J Fire</h1>
-            <p>J Fire is a free, user friendly financial dashboard for clinical research</p>
+            <p>J Fire is a free, user-friendly financial dashboard for clinical research</p>
         </section>
-        <section id="sign-up">
-            <h2>Sign up</h2>
-            <form action="" method="post" class="form-example">
-                <div class="form-example">
+        
+        <!-- Sign Up Section -->
+        <section id="sign-up" aria-labelledby="signup-heading">
+            <h2 id="signup-heading">Sign up</h2>
+            <form action="" method="post" class="form" novalidate>
+                <div class="form">
                     <label for="username">Username: </label>
-                    <input type="text" name="username" id="username" required />
+                    <input type="text" name="username" id="username" required aria-required="true" />
                 </div>
-                <div class="form-example">
+                <div class="form">
                     <label for="password">Password: </label>
-                    <input type="password" name="password" id="password" required />
+                    <input type="password" name="password" id="password" required aria-required="true" />
                 </div>
-                <div class="form-example">
+                <div class="form">
                     <label for="email">Email for verification: </label>
-                    <input type="email" name="email" id="email" required />
+                    <input type="email" name="email" id="email" required aria-required="true" />
                 </div>
-                <div class="form-example">
+                <div class="form">
                     <input type="submit" value="Sign Up" />
                 </div>
             </form>
         </section>
-        <section id="sign-in">
-            <h2>Sign in to J Fire</h2>
-            <form action="" method="post" class="form-example signin-form">
-                <div class="form-example">
+        
+        <!-- Sign In Section -->
+        <section id="sign-in" aria-labelledby="signin-heading">
+            <h2 id="signin-heading">Sign in to J Fire</h2>
+            <form action="" method="post" class="form signin-form" novalidate>
+                <div class="form">
                     <label for="signin-username">Username: </label>
-                    <input type="text" name="username" id="signin-username" required />
+                    <input type="text" name="username" id="signin-username" required aria-required="true" />
                 </div>
-                <div class="form-example">
+                <div class="form">
                     <label for="signin-password">Password: </label>
-                    <input type="password" name="password" id="signin-password" required />
+                    <input type="password" name="password" id="signin-password" required aria-required="true" />
                 </div>
-                <div class="form-example">
+                <div class="form">
                     <input type="submit" value="Sign In" />
                 </div>
             </form>
         </section>
-        <section>
-            <h2>Budget Entry</h2>
-            <form action="" method="post" class="form-example budget-form">
-                <div class="form-example">
+        
+        <!-- Budget Entry Section -->
+        <section id="budget-entry" aria-labelledby="budget-heading">
+            <h2 id="budget-heading">Budget Entry</h2>
+            <form action="" method="post" class="form budget-form" novalidate>
+                <div class="form">
                     <label for="budget-name">Budget Name: </label>
-                    <input type="text" name="budget-name" id="budget-name" required />
+                    <input type="text" name="budget-name" id="budget-name" required aria-required="true" />
                 </div>
-                <div class="form-example">
+                <div class="form">
                     <label for="fixed-costs">Fixed Costs (one per line): </label>
-                    <textarea name="fixed-costs" id="fixed-costs" rows="5" placeholder="e.g. Rent: 1000&#10;Utilities: 200"></textarea>
+                    <textarea name="fixed-costs" id="fixed-costs" rows="5" placeholder="e.g. Rent: 1000&#10;Utilities: 200" aria-describedby="fixed-costs-help"></textarea>
+                    <small id="fixed-costs-help">Enter each cost as "Name: Amount"</small>
                 </div>
-                <div class="form-example">
+                <div class="form">
                     <label for="variable-costs">Variable Costs (one per line): </label>
-                    <textarea name="variable-costs" id="variable-costs" rows="5" placeholder="e.g. Supplies: 500&#10;Travel: 300"></textarea>
+                    <textarea name="variable-costs" id="variable-costs" rows="5" placeholder="e.g. Supplies: 500&#10;Travel: 300" aria-describedby="variable-costs-help"></textarea>
+                    <small id="variable-costs-help">Enter each cost as "Name: Amount"</small>
                 </div>
-                <div class="form-example">
+                <div class="form">
                     <input type="submit" value="Save Budget" />
                 </div>
             </form>
         </section>
-         <section id="budget-builder">
-            <h2>Study set-up</h2>
+        
+        <!-- Study Setup Section -->
+        <section id="budget-builder" aria-labelledby="setup-heading">
+            <h2 id="setup-heading">Study set-up</h2>
             <p>Build a clinical trial budget from the protocol up</p>
             <form action=""></form>
-         </section>
+        </section>
     </main>
-    <footer>
-        <p>Copyright 2026 wjhyoung</p>
+    
+    <!-- ========================================
+         Footer
+         ======================================== -->
+    <footer role="contentinfo">
+        <p>&copy; 2026 <span class="author">wjhyoung</span>. All rights reserved.</p>
+        <nav aria-label="Footer Navigation">
+            <ul>
+                <li><a href="#privacy">Privacy Policy</a></li>
+                <li><a href="#terms">Terms of Service</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
     </footer>
-
-    <script src="script.js"></script>
-</body>
-
-</html>
-
-<script src="script.js"></script>
-
+    
+    <!-- ========================================
+         Scripts
+         ======================================== -->
+    <!-- Main application script -->
+    <script src="script.js" defer></script>
+    
+    <!-- ========================================
+         No-JS Fallback & Analytics
+         ======================================== -->
+    <noscript>
+        <p>This application requires JavaScript to be enabled. Please enable JavaScript in your browser settings.</p>
+    </noscript>
+    
+    <!-- Placeholder for analytics scripts -->
+    <!-- <script async src="https://analytics.example.com/script.js"></script> -->
 </body>
 
 </html>

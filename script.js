@@ -1,11 +1,11 @@
 // Greet the console
 
 console.log("Hello World!!! It's me, your ghost")
-console.log("Dishing out on local network 8080 -- joeliecakes")
+console.log("Dishing out on local network 8891 -- joeliecakes")
 
 // Sign-up form handling
 document.addEventListener('DOMContentLoaded', function() {
-    const signupForm = document.querySelector('.form-example');
+    const signupForm = document.querySelector('.form');
     if (signupForm) {
         signupForm.addEventListener('submit', function(event) {
             event.preventDefault(); // Prevent default form submission
