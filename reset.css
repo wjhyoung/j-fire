@@ -1,0 +1,47 @@
+/* ========================================
+   CSS RESET & BASE STYLES
+   ======================================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+*::before,
+*::after {
+    box-sizing: inherit;
+}
+
+html {
+    font-size: 18px;
+    line-height: 1.5;
+    scroll-behavior: smooth;
+    background-color: var(--bg-soft);
+}
+
+body {
+    font-family: 'DIN Next W01', Arial, 'Helvetica Neue', helvetica, sans-serif;
+    background: var(--bg-soft);
+    color: var(--text-base);
+    overflow-x: hidden;
+    width: 90%;
+}
+
+/* ========================================
+   COLOR PALETTE
+   ======================================== */
+
+/* Primary Colors */
+:root {
+    --brand-primary: #F07D4A;         /* warm coral */
+    --brand-secondary: #36B0EB;       /* cool light blue */
+    --bg-soft: #e9dce0;               /* pale pink-beige */
+    --muted-green: #DCEADE;           /* soft green */
+    --muted-lime: #DAD8EA;            /* light lavender */
+    --text-base: #0D0D0D;
+    --text-subtle: #666666;
+    --border: #cccccc;
+    --surface: #f8f8f8;
+    --white: #ffffff;
+}

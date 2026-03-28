@@ -1,119 +1,5 @@
 /* ========================================
-   CSS Stylesheet
-   J Fire - Financial Dashboard
-   ======================================== */
-
-/* ========================================
-   1. CSS RESET & BASE STYLES
-   ======================================== */
-
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-*::before,
-*::after {
-    box-sizing: inherit;
-}
-
-html {
-    font-size: 18px;
-    line-height: 1.5;
-    scroll-behavior: smooth;
-    background-color: var(--bg-soft);
-}
-
-body {
-    font-family: 'DIN Next W01', Arial, 'Helvetica Neue', helvetica, sans-serif;
-    background: var(--bg-soft);
-    color: var(--text-base);
-    overflow-x: hidden;
-    width: 90%;
-}
-
-/* ========================================
-   2. TYPOGRAPHY
-   ======================================== */
-
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-    margin: 0;
-    padding: 10px;
-    color: var(--text-base);
-    font-weight: 400;
-    line-height: 1.2;
-}
-
-h1 {
-    font-size: 3em;
-    text-align: left;
-}
-
-h2 {
-    font-size: 2em;
-    text-align: left;
-}
-
-h3 {
-    font-size: 1.75em;
-}
-
-h4 {
-    font-size: 1.5em;
-}
-
-h5 {
-    font-size: 1.25em;
-}
-
-h6 {
-    font-size: 1em;
-}
-
-p {
-    margin: 10px;
-    line-height: 1.6;
-}
-
-a {
-    color: var(--brand-secondary);
-    outline: none;
-    text-decoration: none;
-    padding: 2px 1px 0;
-    transition: all 0.3s ease;
-}
-
-a:link {
-    color: var(--text-base);
-}
-
-a:visited {
-    color: var(--text-base);
-}
-
-a:focus {
-    border-bottom: 1px solid;
-    background: var(--muted-lime);
-}
-
-a:hover {
-    border-bottom: 1px solid;
-    background: var(--muted-green);
-}
-
-a:active {
-    background: #000000; /* black as palette fallback */
-    color: var(--bg-soft); /* palette color */
-}
-
-/* ========================================
-   3. LAYOUT & STRUCTURE
+   1. LAYOUT & STRUCTURE
    ======================================== */
 
 header {
@@ -162,7 +48,7 @@ section {
 
 
 /* ========================================
-   4. NAVIGATION STYLES
+   2. NAVIGATION STYLES
    ======================================== */
 
 .topNav {
@@ -189,7 +75,7 @@ section {
 }
 
 /* ========================================
-   5. FORM STYLES
+   3. FORM STYLES
    ======================================== */
 
 .form {
@@ -260,7 +146,7 @@ section {
 }
 
 /* ========================================
-   6. UTILITY CLASSES
+   4. UTILITY CLASSES
    ======================================== */
 
 .bio {
@@ -354,7 +240,7 @@ img.center {
 }
 
 /* ========================================
-   7. COLOR PALETTE
+   5. COLOR PALETTE
    ======================================== */
 
 /* Primary Colors */
@@ -371,7 +257,7 @@ img.center {
 }
 
 /* ========================================
-   8. RESPONSIVE DESIGN
+   6. RESPONSIVE DESIGN
    ======================================== */
 
 @media screen and (max-width: 768px) {
@@ -424,7 +310,7 @@ img.center {
 }
 
 /* ========================================
-   9. ACCESSIBILITY
+   7. ACCESSIBILITY
    ======================================== */
 
 /* Skip to main content link */
@@ -450,7 +336,7 @@ img.center {
 }
 
 /* ========================================
-   10. ANIMATION & TRANSITIONS
+   8. ANIMATION & TRANSITIONS
    ======================================== */
 
 @keyframes fadeIn {
@@ -489,7 +375,7 @@ img.center {
 }
 
 /* ========================================
-   11. PRINT STYLES
+   9. PRINT STYLES
    ======================================== */
 
 @media print {
@@ -527,7 +413,9 @@ footer {
     /* Cool light purple */
 }
 
-/* Sign-up form basic styles */
+/* ========================================
+   10. SING-UP FORM BASIC STYLES
+   ======================================== */
 
 form.form {
     display: table;
