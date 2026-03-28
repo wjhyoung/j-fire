@@ -3,9 +3,9 @@
 #000000
 #F07D4A
 #e9dce0
-rgb(235, 184, 173)
+#ebb8ad
 #DCEADE
-rgb(218, 216, 234)
+#dad8ea
 #36B0EB
 
 // Updated March 26, 2026
