@@ -17,7 +17,7 @@ nav {
 
 main {
     min-height: calc(100vh - 100px);
-    padding: 20px;
+    padding: 1px;
 }
 
 section {
@@ -395,8 +395,6 @@ img.center {
         text-decoration: underline;
     }
 }
-
-
 
 main {
     background-color: #DCEADE;

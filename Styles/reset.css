@@ -18,6 +18,7 @@ html {
     line-height: 1.5;
     scroll-behavior: smooth;
     background-color: var(--bg-soft);
+    margin: 0;
 }
 
 body {
@@ -25,7 +26,8 @@ body {
     background: var(--bg-soft);
     color: var(--text-base);
     overflow-x: hidden;
-    width: 90%;
+    width: 95%;
+    margin: 0 auto;
 }
 
 /* ========================================
