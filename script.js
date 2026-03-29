@@ -82,3 +82,15 @@ function parseCosts(text) {
         return { name, amount };
     });
 }
+
+// Learning function for console
+// (function () {
+//   "use strict";
+//   /* Start of your code */
+//   function greetMe(yourName) {
+//     alert(`Hello ${yourName}`);
+//   }
+
+//   greetMe("World");
+//   /* End of your code */
+// })();
