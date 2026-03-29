@@ -17,7 +17,7 @@ h6 {
 
 h1 {
     font-size: 3em;
-    text-align: left;
+    text-align: center;
 }
 
 h2 {
@@ -44,6 +44,7 @@ h6 {
 p {
     margin: 10px;
     line-height: 1.6;
+    text-align: center;
 }
 
 a {

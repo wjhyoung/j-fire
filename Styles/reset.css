@@ -36,8 +36,8 @@ body {
 
 /* Primary Colors */
 :root {
-    --brand-primary: #F07D4A;         /* warm coral */
-    --brand-secondary: #36B0EB;       /* cool light blue */
+    --brand-primary: #f07d4a;         /* warm coral */
+    --brand-secondary: #36b0eb;       /* cool light blue */
     --bg-soft: #e9dce0;               /* pale pink-beige */
     --muted-green: #DCEADE;           /* soft green */
     --muted-lime: #DAD8EA;            /* light lavender */
