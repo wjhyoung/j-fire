@@ -9,10 +9,12 @@ header {
 }
 
 nav {
+    width: 90% auto;
     padding: 2%;
     display: flex;
     gap: 20px;
     align-items: center;
+    background: var(--bg-soft);
 }
 
 main {
@@ -57,10 +59,9 @@ section {
     text-align: left;
     margin: 5px;
     padding: 10px;
-    font-style: italic;
-    background: #fff;
+    /* font-style: italic; */
     border: 1px solid var(--border);
-    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
 }
 
 .bottomNav {
@@ -71,8 +72,30 @@ section {
     padding: 10px;
     background: #fff;
     border: 1px solid var(--border);
-    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
 }
+
+.topNavGraphic {
+    width: 100%;
+}
+
+.topNavBar {
+    width: 100%;
+}
+
+.topNavBar ul {
+    display: flex;
+    flex-direction: row-reverse;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    gap: 20px;
+}
+
+.topNavBar li {
+    margin: 0;
+}
+
 
 /* ========================================
    3. FORM STYLES
@@ -136,7 +159,8 @@ section {
 
 .form input[type="submit"]:hover,
 .form button:hover {
-    background-color: #F07D4A; /* palette color */
+    background-color: #F07D4A;
+    /* palette color */
     transform: translateY(-2px);
 }
 
@@ -157,7 +181,7 @@ section {
     padding: 10px;
     background: #fff;
     border: 1px solid var(--border);
-    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
 }
 
 .center {
@@ -245,11 +269,16 @@ img.center {
 
 /* Primary Colors */
 :root {
-    --brand-primary: #F07D4A;         /* warm coral */
-    --brand-secondary: #36B0EB;       /* cool light blue */
-    --bg-soft: #e9dce0;               /* pale pink-beige */
-    --muted-green: #DCEADE;           /* soft green */
-    --muted-lime: #DAD8EA;            /* light lavender */
+    --brand-primary: #F07D4A;
+    /* warm coral */
+    --brand-secondary: #36B0EB;
+    /* cool light blue */
+    --bg-soft: #e9dce0;
+    /* pale pink-beige */
+    --muted-green: #DCEADE;
+    /* soft green */
+    --muted-lime: #DAD8EA;
+    /* light lavender */
     --text-base: #0D0D0D;
     --text-subtle: #666666;
     --border: #cccccc;
@@ -362,11 +391,16 @@ img.center {
 }
 
 :root {
-    --primary-dark: #F07D4A; /* palette */
-    --primary-light: #36B0EB; /* palette */
-    --accent-light: #DCEADE; /* palette */
-    --accent-lighter: #e9dce0; /* palette */
-    --accent-dark: #000000; /* black */
+    --primary-dark: #F07D4A;
+    /* palette */
+    --primary-light: #36B0EB;
+    /* palette */
+    --accent-light: #DCEADE;
+    /* palette */
+    --accent-lighter: #e9dce0;
+    /* palette */
+    --accent-dark: #000000;
+    /* black */
     --text-dark: #0D0D0D;
     --text-light: #666;
     --border-color: #ccc;
