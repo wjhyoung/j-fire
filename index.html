@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 
+<!-- Welcome to the code for J Fire, the simple clinical trial budgeting tool !! :) -->
+
 <head>
     <!-- ========================================
          Document Metadata
@@ -66,14 +68,18 @@
     <header role="banner">
         <nav role="navigation" aria-label="Main Navigation" class="topNav">
             <div class="topNavGraphic">
-                <img class="topNavGraphic" src="Images/design-button-light.svg" alt="Light geometric branding logo">
+                <a href="index.html"><img class="topNavGraphic" src="Images/design-button-light.svg"
+                        alt="Light geometric branding logo"></a>
             </div>
             <div class="topNavBar">
                 <ul>
                     <li><a href="#sign-up">Sign Up</a></li>
                     <li><a href="#sign-in">Sign In</a></li>
                     <li><a href="#budget-entry">Budget tool</a></li>
-                    <li><a href="#main-content">Home</a></li>
+                    <li><a href="#track">Track</a></li>
+                    <li><a href="#receive">Receive</a></li>
+                    <li><a href="#pay">Pay</a></li>
+                    <li><a href="#about">About</a></li>
                 </ul>
             </div>
         </nav>
@@ -87,10 +93,16 @@
         <section id="main-landing" class="hero-section">
             <h1>Enter a protocol - J Fire</h1>
             <p>J Fire is a free, user-friendly financial dashboard for clinical research</p>
+            <img src="/Images/trippy-computer.gif" alt="Trippy stock photo back of server tower">
+            <p>Connect to reliable, secure servers from any device</p>
+            <img src="/Images/fake-tattoo.jpg" alt="Ironic trippy flame tattoo style graphic">
+            <p>Manage a team with lean, fast data insight</p>
+            <img src="/Images/happy-spreadsheet.jpg" alt="Random spreadsheet stock image">
+            <p>Feel comfortable in the examining room and the board room</p>
         </section>
 
         <!-- Sign Up Section -->
-        <!-- <section id="sign-up" aria-labelledby="signup-heading">
+        <section id="sign-up" aria-labelledby="signup-heading">
             <h2 id="signup-heading">Sign up</h2>
             <form action="" method="post" class="form" novalidate>
                 <div class="form">
@@ -109,10 +121,10 @@
                     <input type="submit" value="Sign Up" class="btn-primary" />
                 </div>
             </form>
-        </section> -->
+        </section>
 
         <!-- Sign In Section -->
-        <!-- <section id="sign-in" aria-labelledby="signin-heading">
+        <section id="sign-in" aria-labelledby="signin-heading">
             <h2 id="signin-heading">Sign in to J Fire</h2>
             <form action="" method="post" class="form signin-form" novalidate>
                 <div class="form">
@@ -127,16 +139,49 @@
                     <input type="submit" value="Sign In" class="btn-primary" />
                 </div>
             </form>
-        </section> -->
+        </section>
 
         <!-- Budget Entry Section -->
         <section id="budget-entry" aria-labelledby="budget-heading">
-            <h2 id="budget-heading">Budget Entry</h2>
+            <h2 id="budget-heading">Build a trial budget</h2>
+            <p>Use this form to construct a clinical trial budget from the ground up</p>
+
+            <!-- Basic trial set-up -->
             <form action="" method="post" class="form budget-form" novalidate>
                 <div class="form">
-                    <label for="budget-name">Budget Name: </label>
+                    <label for="budget-name">Project name: </label>
                     <input type="text" name="budget-name" id="budget-name" required aria-required="true" />
                 </div>
+                <div class="form">
+                    <label for="budget-name">Project sponsor: </label>
+                    <input type="text" name="sponsor-name" id="sponsor-name" required aria-required="true" />
+                </div>
+                <div class="form">
+                    <label for="budget-name">Protocol number: </label>
+                    <input type="text" name="protocol-name" id="protocol-name" required aria-required="true" />
+                </div>
+                <div class="form">
+                    <label for="budget-name">Full study title: </label>
+                    <input type="text" name="study-name" id="study-name" required aria-required="true" />
+                </div>
+                <div class="form">
+                    <label for="budget-name">Disease: </label>
+                    <input type="text" name="disease-name" id="disease-name" required aria-required="true" />
+                </div>
+                <div class="form">
+                    <label for="budget-name">Disease category: </label>
+                    <input type="text" name="category-name" id="category-name" required aria-required="true" />
+                </div>
+                <div class="form">
+                    <label for="budget-name">Date of initial contact: </label>
+                    <input type="text" name="initial-date" id="initial-date" required aria-required="true" />
+                </div>
+                <p>To analyze & track this project, you may save the project</p>
+                <button>Save project !!:D</button>
+                </form>
+
+                <!-- Fixed cost section -->
+                <form action="">
                 <div class="form">
                     <label for="fixed-costs">Fixed Costs (one per line): </label>
                     <textarea name="fixed-costs" id="fixed-costs" rows="5"
@@ -155,21 +200,15 @@
                 </div>
             </form>
         </section>
-
-        <!-- Study Setup Section -->
-        <!-- <section id="budget-builder" aria-labelledby="setup-heading">
-            <h2 id="setup-heading">Study set-up</h2>
-            <p>Build a clinical trial budget from the protocol up</p>
-            <form action=""></form>
-        </section>
-    </main> -->
+    </main>
 
     <!-- ========================================
          Footer
          ======================================== -->
     <footer role="contentinfo">
         <p>&copy; 2026 <span class="author">wjhyoung</span></p>
-        <p>J Fire is an open sourced project under the <a href="/LICENSE">MIT License</a></p>
+        <p>J Fire is free and open source under the <a href="/LICENSE">MIT License</a>.</p>
+        <p>Please <a href="#contact">reach out to us </a> if you would like to learn more or collaborate! </p>
         <nav aria-label="Footer Navigation" class="bottomNav">
             <ul>
                 <li><a href="#privacy">Privacy Policy</a></li>
@@ -189,7 +228,8 @@
          No-JS Fallback & Analytics
          ======================================== -->
     <noscript>
-        <p>This application requires JavaScript to be enabled. Please enable JavaScript in your browser settings.</p>
+        <p>This application requires JavaScript to be enabled. Please enable JavaScript in your browser settings.
+        </p>
     </noscript>
 
     <!-- Placeholder for analytics scripts -->

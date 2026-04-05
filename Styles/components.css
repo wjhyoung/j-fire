@@ -48,7 +48,6 @@ section {
     border: 1px solid var(--border);
 }
 
-
 /* ========================================
    2. NAVIGATION STYLES
    ======================================== */
@@ -76,7 +75,7 @@ section {
 }
 
 .topNavGraphic {
-    width: 100%;
+    width: 50%;
 }
 
 .topNavBar {
@@ -85,7 +84,7 @@ section {
 
 .topNavBar ul {
     display: flex;
-    flex-direction: row-reverse;
+    flex-direction: row;
     list-style: none;
     padding: 0;
     margin: 0;
@@ -96,9 +95,21 @@ section {
     margin: 0;
 }
 
+/* ========================================
+   3. HERO SECTION STYLES
+   ======================================== */
+
+#main-landing img {
+    width: 200px;
+    height: auto;
+    margin: 10px;
+    border-radius: 8px;
+    display: block;
+    margin: 0 auto;
+}
 
 /* ========================================
-   3. FORM STYLES
+   4. FORM STYLES
    ======================================== */
 
 .form {
@@ -170,7 +181,7 @@ section {
 }
 
 /* ========================================
-   4. UTILITY CLASSES
+   5. UTILITY CLASSES
    ======================================== */
 
 .bio {
@@ -264,7 +275,7 @@ img.center {
 }
 
 /* ========================================
-   5. COLOR PALETTE
+   6. COLOR PALETTE
    ======================================== */
 
 /* Primary Colors */
@@ -286,7 +297,7 @@ img.center {
 }
 
 /* ========================================
-   6. RESPONSIVE DESIGN
+   7. RESPONSIVE DESIGN
    ======================================== */
 
 @media screen and (max-width: 768px) {
@@ -339,7 +350,7 @@ img.center {
 }
 
 /* ========================================
-   7. ACCESSIBILITY
+   8. ACCESSIBILITY
    ======================================== */
 
 /* Skip to main content link */
@@ -365,7 +376,7 @@ img.center {
 }
 
 /* ========================================
-   8. ANIMATION & TRANSITIONS
+   9. ANIMATION & TRANSITIONS
    ======================================== */
 
 @keyframes fadeIn {
@@ -409,7 +420,7 @@ img.center {
 }
 
 /* ========================================
-   9. PRINT STYLES
+   10. PRINT STYLES
    ======================================== */
 
 @media print {
@@ -446,7 +457,7 @@ footer {
 }
 
 /* ========================================
-   10. SING-UP FORM BASIC STYLES
+   11. SING-UP FORM BASIC STYLES
    ======================================== */
 
 form.form {
