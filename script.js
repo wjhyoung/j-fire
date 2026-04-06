@@ -5,6 +5,12 @@ console.log("Dishing out on local network 8088 -- joeliecakes")
 
 // Sign-up form handling
 document.addEventListener('DOMContentLoaded', function() {
+    // Set min date for enrollment start
+    const enrollmentStartInput = document.getElementById('enrollment-start');
+    if (enrollmentStartInput) {
+        const today = new Date().toISOString().split('T')[0];
+        enrollmentStartInput.min = today;
+    }
     const signupForm = document.querySelector('.form');
     if (signupForm) {
         signupForm.addEventListener('submit', function(event) {
@@ -68,6 +74,40 @@ document.addEventListener('DOMContentLoaded', function() {
             } else {
                 alert('Please enter a budget name.');
             }
+        });
+    }
+
+    // Finance overview form handling
+    const financeForm = document.querySelector('.finance-form');
+    if (financeForm) {
+        financeForm.addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent default form submission
+            
+            const enrollmentStart = document.getElementById('enrollment-start').value;
+            const patientsLow = parseInt(document.getElementById('patients-low').value);
+            const patientsHigh = parseInt(document.getElementById('patients-high').value);
+            const screenFailRate = parseFloat(document.getElementById('screen-fail-rate').value);
+            const closeOutDate = document.getElementById('close-out-date').value;
+            const overheadRate = parseFloat(document.getElementById('overhead-rate').value);
+            const inflationRate = parseFloat(document.getElementById('inflation-rate').value);
+            
+            // Basic validation
+            const today = new Date().toISOString().split('T')[0];
+            if (enrollmentStart < today) {
+                alert('Enrollment start date must be in the future.');
+                return;
+            }
+            if (patientsLow > patientsHigh) {
+                alert('Low patients enrolled cannot be higher than high patients enrolled.');
+                return;
+            }
+            if (screenFailRate < 0 || screenFailRate > 100) {
+                alert('Screen fail rate must be between 0 and 100.');
+                return;
+            }
+            
+            alert(`Finance overview submitted!\nEnrollment Start: ${enrollmentStart}\nPatients: ${patientsLow} - ${patientsHigh}\nScreen Fail Rate: ${screenFailRate}%\nClose Out Date: ${closeOutDate}\nOverhead Rate: ${overheadRate}%\nInflation Rate: ${inflationRate}%`);
+            // In a real app, process the data for budgeting
         });
     }
 });

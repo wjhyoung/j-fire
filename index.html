@@ -180,8 +180,50 @@
                 <button>Save project !!:D</button>
             </form>
 
-            <!-- Fixed cost section -->
-            <form action="" method="post" class="form budget-form" novalidate>
+
+            <!-- Project finance overview form -->
+            <h3>Project Finance Overview</h3>
+            <form action="" method="post" class="form finance-form" novalidate>
+                <div class="form">
+                    <label for="enrollment-start">Enrollment start date: </label>
+                    <input type="date" name="enrollment-start" id="enrollment-start" min="" required aria-required="true" />
+                </div>
+                <div class="form">
+                    <label for="patients-low">Patients enrolled (low): </label>
+                    <input type="number" name="patients-low" id="patients-low" min="0" required aria-required="true" />
+                </div>
+                <div class="form">
+                    <label for="patients-high">Patients enrolled (high): </label>
+                    <input type="number" name="patients-high" id="patients-high" min="0" required aria-required="true" />
+                </div>
+                <div class="form">
+                    <label for="screen-fail-rate">Screen fail rate (%): </label>
+                    <input type="number" name="screen-fail-rate" id="screen-fail-rate" min="0" max="100" step="0.01" required aria-required="true" />
+                </div>
+                <div class="form">
+                    <label for="close-out-date">Close out date: </label>
+                    <input type="date" name="close-out-date" id="close-out-date" required aria-required="true" />
+                </div>
+                <div class="form">
+                    <label for="overhead-rate">Overhead rate (%): </label>
+                    <input type="number" name="overhead-rate" id="overhead-rate" min="0" step="0.01" required aria-required="true" />
+                </div>
+                <div class="form">
+                    <label for="inflation-rate">Inflation rate (%): </label>
+                    <input type="number" name="inflation-rate" id="inflation-rate" step="0.01" required aria-required="true" />
+                </div>
+                <div class="form">
+                    <input type="submit" value="Calculate Budget" class="btn-primary" />
+                </div>
+            </form>
+
+
+            <!-- Fixed cost form -->
+
+            
+
+            <!-- Previous fixed-costs section -->
+            <form action="" method="post" class="form budget-form" novalidatex>
                 <div class="form">
                     <label for="fixed-costs">Fixed Costs (one per line): </label>
                     <textarea name="fixed-costs" id="fixed-costs" rows="5"
