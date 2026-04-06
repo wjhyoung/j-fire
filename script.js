@@ -110,6 +110,64 @@ document.addEventListener('DOMContentLoaded', function() {
             // In a real app, process the data for budgeting
         });
     }
+
+    // Fixed cost calculator handling
+    const fixedCostForm = document.querySelector('.fixed-cost-form');
+    if (fixedCostForm) {
+        fixedCostForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const fieldIds = [
+                'initial-feasibility-review',
+                'lab-setup',
+                'mri-setup',
+                'basic-startup-cost',
+                'yearly-ethics-review',
+                'pharmacy-maintenance',
+                'annual-fee',
+                'labor'
+            ];
+
+            const totalFixedCosts = fieldIds.reduce((sum, id) => {
+                const value = parseFloat(document.getElementById(id).value);
+                return sum + (isNaN(value) ? 0 : value);
+            }, 0);
+
+            const output = document.getElementById('fixed-cost-total');
+            if (output) {
+                output.textContent = `Total fixed costs: $${formatCurrency(totalFixedCosts)}`;
+            }
+        });
+    }
+
+    // Variable cost calculator handling
+    const variableCostForm = document.querySelector('.variable-cost-form');
+    if (variableCostForm) {
+        variableCostForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const fieldIds = [
+                'professional-fees',
+                'mri',
+                'nursing',
+                'administration',
+                'pi-fees',
+                'coordinator-fees',
+                'supplies',
+                'lab-time'
+            ];
+
+            const totalVariableCosts = fieldIds.reduce((sum, id) => {
+                const value = parseFloat(document.getElementById(id).value);
+                return sum + (isNaN(value) ? 0 : value);
+            }, 0);
+
+            const output = document.getElementById('variable-cost-total');
+            if (output) {
+                output.textContent = `Total variable costs: $${formatCurrency(totalVariableCosts)}`;
+            }
+        });
+    }
 });
 
 // Helper function to parse costs from textarea
@@ -121,6 +179,10 @@ function parseCosts(text) {
         const amount = parseFloat(parts[1]?.trim()) || 0;
         return { name, amount };
     });
+}
+
+function formatCurrency(amount) {
+    return amount.toFixed(2);
 }
 
 // Learning function for console

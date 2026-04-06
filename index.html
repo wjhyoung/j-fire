@@ -219,28 +219,91 @@
 
 
             <!-- Fixed cost form -->
-
-            
-
-            <!-- Previous fixed-costs section -->
-            <form action="" method="post" class="form budget-form" novalidatex>
+            <h3>Fixed Cost Calculator</h3>
+            <form action="" method="post" class="form fixed-cost-form" novalidate>
                 <div class="form">
-                    <label for="fixed-costs">Fixed Costs (one per line): </label>
-                    <textarea name="fixed-costs" id="fixed-costs" rows="5"
-                        placeholder="e.g. Rent: 1000&#10;Utilities: 200" aria-describedby="fixed-costs-help"></textarea>
-                    <small id="fixed-costs-help">Enter each cost as "Name: Amount"</small>
+                    <label for="initial-feasibility-review">Initial feasibility review:</label>
+                    <input type="number" name="initial-feasibility-review" id="initial-feasibility-review" min="0" step="0.01" required aria-required="true" />
                 </div>
                 <div class="form">
-                    <label for="variable-costs">Variable Costs (one per line): </label>
-                    <textarea name="variable-costs" id="variable-costs" rows="5"
-                        placeholder="e.g. Supplies: 500&#10;Travel: 300"
-                        aria-describedby="variable-costs-help"></textarea>
-                    <small id="variable-costs-help">Enter each cost as "Name: Amount"</small>
+                    <label for="lab-setup">Lab set-up:</label>
+                    <input type="number" name="lab-setup" id="lab-setup" min="0" step="0.01" required aria-required="true" />
                 </div>
                 <div class="form">
-                    <input type="submit" value="Save Budget" class="btn-primary" />
+                    <label for="mri-setup">MRI set-up:</label>
+                    <input type="number" name="mri-setup" id="mri-setup" min="0" step="0.01" required aria-required="true" />
+                </div>
+                <div class="form">
+                    <label for="basic-startup-cost">Basic start-up cost:</label>
+                    <input type="number" name="basic-startup-cost" id="basic-startup-cost" min="0" step="0.01" required aria-required="true" />
+                </div>
+                <div class="form">
+                    <label for="yearly-ethics-review">Yearly ethics review:</label>
+                    <input type="number" name="yearly-ethics-review" id="yearly-ethics-review" min="0" step="0.01" required aria-required="true" />
+                </div>
+                <div class="form">
+                    <label for="pharmacy-maintenance">Pharmacy maintenance:</label>
+                    <input type="number" name="pharmacy-maintenance" id="pharmacy-maintenance" min="0" step="0.01" required aria-required="true" />
+                </div>
+                <div class="form">
+                    <label for="annual-fee">Annual fee:</label>
+                    <input type="number" name="annual-fee" id="annual-fee" min="0" step="0.01" required aria-required="true" />
+                </div>
+                <div class="form">
+                    <label for="labor">Labor:</label>
+                    <input type="number" name="labor" id="labor" min="0" step="0.01" required aria-required="true" />
+                </div>
+                <div class="form">
+                    <input type="submit" value="Calculate Fixed Costs" class="btn-primary" />
+                </div>
+                <div class="form">
+                    <p id="fixed-cost-total" aria-live="polite">Total fixed costs: $0.00</p>
                 </div>
             </form>
+
+            <!-- Variable costs form -->
+            <h3>Variable Cost Calculator</h3>
+            <form action="" method="post" class="form variable-cost-form" novalidate>
+                <div class="form">
+                    <label for="professional-fees">Professional fees:</label>
+                    <input type="number" name="professional-fees" id="professional-fees" min="0" step="0.01" required aria-required="true" />
+                </div>
+                <div class="form">
+                    <label for="mri">MRI:</label>
+                    <input type="number" name="mri" id="mri" min="0" step="0.01" required aria-required="true" />
+                </div>
+                <div class="form">
+                    <label for="nursing">Nursing:</label>
+                    <input type="number" name="nursing" id="nursing" min="0" step="0.01" required aria-required="true" />
+                </div>
+                <div class="form">
+                    <label for="administration">Administration:</label>
+                    <input type="number" name="administration" id="administration" min="0" step="0.01" required aria-required="true" />
+                </div>
+                <div class="form">
+                    <label for="pi-fees">PI Fees:</label>
+                    <input type="number" name="pi-fees" id="pi-fees" min="0" step="0.01" required aria-required="true" />
+                </div>
+                <div class="form">
+                    <label for="coordinator-fees">Coordinator fees:</label>
+                    <input type="number" name="coordinator-fees" id="coordinator-fees" min="0" step="0.01" required aria-required="true" />
+                </div>
+                <div class="form">
+                    <label for="supplies">Supplies:</label>
+                    <input type="number" name="supplies" id="supplies" min="0" step="0.01" required aria-required="true" />
+                </div>
+                <div class="form">
+                    <label for="lab-time">Lab time:</label>
+                    <input type="number" name="lab-time" id="lab-time" min="0" step="0.01" required aria-required="true" />
+                </div>
+                <div class="form">
+                    <input type="submit" value="Calculate Variable Costs" class="btn-primary" />
+                </div>
+                <div class="form">
+                    <p id="variable-cost-total" aria-live="polite">Total variable costs: $0.00</p>
+                </div>
+            </form>
+
         </section>
     </main>
 
@@ -249,9 +312,9 @@
          ======================================== -->
     <footer role="contentinfo">
         <p>&copy; 2026 <span class="author">Joel Young</span></p>
-        <p>J Fire is free and open source under the <a href="/LICENSE">MIT License</a>.</p>
+        <p>J Fire is free and open source under the <a href="/LICENSE">MIT License</a></p>
         <p>Images, media and other site content are licensed under the <a href="/LICENSE-CC.txt">Creative Commons
-                Attribution-NonCommercial-ShareAlike 4.0 International</a></p>
+                Attribution-NonCommercial-ShareAlike 4.0 International</a> standard</p>
         </p>
         <nav aria-label="Footer Navigation" class="bottomNav">
             <ul>
