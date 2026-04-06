@@ -170,30 +170,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-// Helper function to parse costs from textarea
-function parseCosts(text) {
-    const lines = text.split('\n').filter(line => line.trim());
-    return lines.map(line => {
-        const parts = line.split(':');
-        const name = parts[0]?.trim() || 'Unnamed';
-        const amount = parseFloat(parts[1]?.trim()) || 0;
-        return { name, amount };
-    });
-}
-
 function formatCurrency(amount) {
     return amount.toFixed(2);
 }
-
-// Learning function for console
-// (function () {
-//   "use strict";
-//   /* Start of your code */
-//   function greetMe(yourName) {
-//     alert(`Hello ${yourName}`);
-//   }
-
-//   greetMe("World");
-//   /* End of your code */
-// })();
 
