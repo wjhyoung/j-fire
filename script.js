@@ -1,7 +1,11 @@
-// Greet the console
+// J Fire Scripts
+let progress = 0.1
 
-console.log("Hello World!!! It's me, your ghost")
-console.log("Dishing out on local network 8088 -- joeliecakes")
+let weeks = (80*progress)
+
+console.log(weeks)
+
+console.log("Building logic for site, dishing on 8000, for the next " + weeks + " weeks...")
 
 // Sign-up form handling
 document.addEventListener('DOMContentLoaded', function() {
