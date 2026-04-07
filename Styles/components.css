@@ -48,6 +48,10 @@ section {
     border: 1px solid var(--border);
 }
 
+p {
+    padding:1rem;
+}
+
 /* ========================================
    2. NAVIGATION STYLES
    ======================================== */
