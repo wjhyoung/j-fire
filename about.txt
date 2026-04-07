@@ -3,3 +3,5 @@
 This is the repository for J Fire, a Clinical Research Financial Dashboard for small enterprises.
 
 Project initiated Montreal / Tiohtia'ke March 2026
+
+J Fire takes as its inspiration the 

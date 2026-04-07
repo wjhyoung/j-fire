@@ -1,14 +1,16 @@
 // J Fire Scripts
 let progress = 0.1
 
-let weeks = (80*progress)
+let weeks = (80 * progress)
 
 console.log(weeks)
 
 console.log("Building logic for site, dishing on 8000, for the next " + weeks + " weeks...")
 
+// Budget form data persistence via localStorage
+
 // Sign-up form handling
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     // Set min date for enrollment start
     const enrollmentStartInput = document.getElementById('enrollment-start');
     if (enrollmentStartInput) {
@@ -17,13 +19,13 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     const signupForm = document.querySelector('.form');
     if (signupForm) {
-        signupForm.addEventListener('submit', function(event) {
+        signupForm.addEventListener('submit', function (event) {
             event.preventDefault(); // Prevent default form submission
-            
+
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
             const email = document.getElementById('email').value;
-            
+
             // Basic validation
             if (username && password && email) {
                 alert(`Sign-up successful!\nUsername: ${username}\nEmail: ${email}`);
@@ -37,12 +39,12 @@ document.addEventListener('DOMContentLoaded', function() {
     // Sign-in form handling
     const signinForm = document.querySelector('.signin-form');
     if (signinForm) {
-        signinForm.addEventListener('submit', function(event) {
+        signinForm.addEventListener('submit', function (event) {
             event.preventDefault(); // Prevent default form submission
-            
+
             const username = document.getElementById('signin-username').value;
             const password = document.getElementById('signin-password').value;
-            
+
             // Basic validation
             if (username && password) {
                 alert(`Sign-in successful!\nWelcome back, ${username}!`);
@@ -55,28 +57,88 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Budget entry form handling
     const budgetForm = document.querySelector('.budget-form');
+    const loadBudgetButton = document.getElementById('load-budget');
+    const budgetLoadResult = document.getElementById('budget-load-result');
+
     if (budgetForm) {
-        budgetForm.addEventListener('submit', function(event) {
+        budgetForm.addEventListener('submit', function (event) {
             event.preventDefault(); // Prevent default form submission
-            
-            const budgetName = document.getElementById('budget-name').value;
-            const fixedCostsText = document.getElementById('fixed-costs').value;
-            const variableCostsText = document.getElementById('variable-costs').value;
-            
+
+            const budgetName = document.getElementById('budget-name').value.trim();
+            const sponsorName = document.getElementById('sponsor-name').value.trim();
+            const protocolName = document.getElementById('protocol-name').value.trim();
+            const studyName = document.getElementById('study-name').value.trim();
+            const diseaseName = document.getElementById('disease-name').value.trim();
+            const categoryName = document.getElementById('category-name').value.trim();
+            const initialContactDate = document.getElementById('initial-date').value.trim();
+
             // Basic validation
-            if (budgetName) {
-                // Parse costs (simple parsing, assuming format "Name: Amount")
-                const fixedCosts = parseCosts(fixedCostsText);
-                const variableCosts = parseCosts(variableCostsText);
-                
-                const totalFixed = fixedCosts.reduce((sum, cost) => sum + cost.amount, 0);
-                const totalVariable = variableCosts.reduce((sum, cost) => sum + cost.amount, 0);
-                const total = totalFixed + totalVariable;
-                
-                alert(`Budget "${budgetName}" saved!\nFixed Costs Total: $${totalFixed}\nVariable Costs Total: $${totalVariable}\nGrand Total: $${total}`);
-                // In a real app, send data to server
-            } else {
-                alert('Please enter a budget name.');
+            if (!budgetName || !sponsorName || !protocolName || !studyName || !diseaseName || !categoryName || !initialContactDate) {
+                alert('Please fill in all required project fields.');
+                return;
+            }
+
+            const budgetEntry = {
+                budgetName,
+                sponsorName,
+                protocolName,
+                studyName,
+                diseaseName,
+                categoryName,
+                initialContactDate,
+                savedAt: new Date().toISOString()
+            };
+
+            localStorage.setItem('budgetEntry', JSON.stringify(budgetEntry));
+
+            alert(`Project saved!\nProject: ${budgetName}\nSponsor: ${sponsorName}\nProtocol: ${protocolName}`);
+
+            if (budgetLoadResult) {
+                budgetLoadResult.textContent = 'Budget saved successfully. Click "Load saved project" to retrieve it.';
+            }
+        });
+    }
+
+    if (loadBudgetButton) {
+        loadBudgetButton.addEventListener('click', function () {
+            const savedBudgetJson = localStorage.getItem('budgetEntry');
+            if (!savedBudgetJson) {
+                if (budgetLoadResult) {
+                    budgetLoadResult.textContent = 'No saved project found in local storage.';
+                }
+                return;
+            }
+
+            try {
+                const savedBudget = JSON.parse(savedBudgetJson);
+                document.getElementById('budget-name').value = savedBudget.budgetName || '';
+                document.getElementById('sponsor-name').value = savedBudget.sponsorName || '';
+                document.getElementById('protocol-name').value = savedBudget.protocolName || '';
+                document.getElementById('study-name').value = savedBudget.studyName || '';
+                document.getElementById('disease-name').value = savedBudget.diseaseName || '';
+                document.getElementById('category-name').value = savedBudget.categoryName || '';
+                document.getElementById('initial-date').value = savedBudget.initialContactDate || '';
+
+                if (budgetLoadResult) {
+                    budgetLoadResult.innerHTML = `
+                        <p><strong>Loaded saved project:</strong></p>
+                        <ul>
+                            <li><strong>Project:</strong> ${savedBudget.budgetName || '—'}</li>
+                            <li><strong>Sponsor:</strong> ${savedBudget.sponsorName || '—'}</li>
+                            <li><strong>Protocol:</strong> ${savedBudget.protocolName || '—'}</li>
+                            <li><strong>Study title:</strong> ${savedBudget.studyName || '—'}</li>
+                            <li><strong>Disease:</strong> ${savedBudget.diseaseName || '—'}</li>
+                            <li><strong>Category:</strong> ${savedBudget.categoryName || '—'}</li>
+                            <li><strong>Initial contact:</strong> ${savedBudget.initialContactDate || '—'}</li>
+                            <li><strong>Saved at:</strong> ${savedBudget.savedAt ? new Date(savedBudget.savedAt).toLocaleString() : '—'}</li>
+                        </ul>
+                    `;
+                }
+            } catch (error) {
+                console.error('Error parsing saved budget:', error);
+                if (budgetLoadResult) {
+                    budgetLoadResult.textContent = 'Could not load saved project. Data may be corrupted.';
+                }
             }
         });
     }
@@ -84,9 +146,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // Finance overview form handling
     const financeForm = document.querySelector('.finance-form');
     if (financeForm) {
-        financeForm.addEventListener('submit', function(event) {
+        financeForm.addEventListener('submit', function (event) {
             event.preventDefault(); // Prevent default form submission
-            
+
             const enrollmentStart = document.getElementById('enrollment-start').value;
             const patientsLow = parseInt(document.getElementById('patients-low').value);
             const patientsHigh = parseInt(document.getElementById('patients-high').value);
@@ -94,7 +156,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const closeOutDate = document.getElementById('close-out-date').value;
             const overheadRate = parseFloat(document.getElementById('overhead-rate').value);
             const inflationRate = parseFloat(document.getElementById('inflation-rate').value);
-            
+
             // Basic validation
             const today = new Date().toISOString().split('T')[0];
             if (enrollmentStart < today) {
@@ -109,8 +171,24 @@ document.addEventListener('DOMContentLoaded', function() {
                 alert('Screen fail rate must be between 0 and 100.');
                 return;
             }
-            
-            alert(`Finance overview submitted!\nEnrollment Start: ${enrollmentStart}\nPatients: ${patientsLow} - ${patientsHigh}\nScreen Fail Rate: ${screenFailRate}%\nClose Out Date: ${closeOutDate}\nOverhead Rate: ${overheadRate}%\nInflation Rate: ${inflationRate}%`);
+
+            const financeSummary = document.getElementById('finance-summary');
+            if (financeSummary) {
+                const expectedLow = Math.round(patientsLow * (1 - screenFailRate / 100));
+                const expectedHigh = Math.round(patientsHigh * (1 - screenFailRate / 100));
+                financeSummary.innerHTML = `
+                    <p><strong>Finance Summary</strong></p>
+                    <ul>
+                        <li>Enrollment Start: ${enrollmentStart}</li>
+                        <li>Close Out Date: ${closeOutDate}</li>
+                        <li>Patient range: ${patientsLow} - ${patientsHigh}</li>
+                        <li>Expected after screen failure: ${expectedLow} - ${expectedHigh}</li>
+                        <li>Screen Fail Rate: ${screenFailRate.toFixed(2)}%</li>
+                        <li>Overhead Rate: ${overheadRate.toFixed(2)}%</li>
+                        <li>Inflation Rate: ${inflationRate.toFixed(2)}%</li>
+                    </ul>
+                `;
+            }
             // In a real app, process the data for budgeting
         });
     }
@@ -118,7 +196,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Fixed cost calculator handling
     const fixedCostForm = document.querySelector('.fixed-cost-form');
     if (fixedCostForm) {
-        fixedCostForm.addEventListener('submit', function(event) {
+        fixedCostForm.addEventListener('submit', function (event) {
             event.preventDefault();
 
             const fieldIds = [
@@ -147,7 +225,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Variable cost calculator handling
     const variableCostForm = document.querySelector('.variable-cost-form');
     if (variableCostForm) {
-        variableCostForm.addEventListener('submit', function(event) {
+        variableCostForm.addEventListener('submit', function (event) {
             event.preventDefault();
 
             const fieldIds = [

@@ -154,31 +154,37 @@
                     <input type="text" name="budget-name" id="budget-name" required aria-required="true" />
                 </div>
                 <div class="form">
-                    <label for="budget-name">Project sponsor: </label>
+                    <label for="sponsor-name">Project sponsor: </label>
                     <input type="text" name="sponsor-name" id="sponsor-name" required aria-required="true" />
                 </div>
                 <div class="form">
-                    <label for="budget-name">Protocol number: </label>
+                    <label for="protocol-name">Protocol number: </label>
                     <input type="text" name="protocol-name" id="protocol-name" required aria-required="true" />
                 </div>
                 <div class="form">
-                    <label for="budget-name">Full study title: </label>
+                    <label for="study-name">Full study title: </label>
                     <input type="text" name="study-name" id="study-name" required aria-required="true" />
                 </div>
                 <div class="form">
-                    <label for="budget-name">Disease: </label>
+                    <label for="disease-name">Disease: </label>
                     <input type="text" name="disease-name" id="disease-name" required aria-required="true" />
                 </div>
                 <div class="form">
-                    <label for="budget-name">Disease category: </label>
+                    <label for="category-name">Disease category: </label>
                     <input type="text" name="category-name" id="category-name" required aria-required="true" />
                 </div>
                 <div class="form">
-                    <label for="budget-name">Date of initial contact: </label>
+                    <label for="initial-date">Date of initial contact: </label>
                     <input type="text" name="initial-date" id="initial-date" required aria-required="true" />
                 </div>
                 <p>To analyze & track this project, you may save the project</p>
-                <button>Save project !!:D</button>
+                <div class="form">
+                    <button type="submit">Create project !!:D</button>
+                </div>
+                <div class="form">
+                    <button type="button" id="load-budget">Load saved project</button>
+                </div>
+                <div class="form" id="budget-load-result" aria-live="polite"></div>
             </form>
 
 
@@ -215,6 +221,9 @@
                 </div>
                 <div class="form">
                     <input type="submit" value="Calculate Budget" class="btn-primary" />
+                </div>
+                <div class="form">
+                    <div id="finance-summary" aria-live="polite">Budget summary will appear here after calculation.</div>
                 </div>
             </form>
 
@@ -261,6 +270,7 @@
                     <p id="fixed-cost-total" aria-live="polite">Total fixed costs: $0.00</p>
                 </div>
             </form>
+            <p>Accordingly, your budget total is ___</p>
 
             <!-- Variable costs form -->
             <h3>Variable Cost Calculator</h3>

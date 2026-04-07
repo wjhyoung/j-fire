@@ -179,6 +179,30 @@ section {
     transform: translateY(0);
 }
 
+#finance-summary {
+    background: var(--bg-soft);
+    border: 1px solid var(--brand-secondary);
+    border-radius: 10px;
+    padding: 1rem;
+    color: var(--text-base);
+    max-width: 400px;
+}
+
+#finance-summary p {
+    margin: 0 0 0.75rem;
+    font-weight: 700;
+    color: var(--brand-secondary);
+}
+
+#finance-summary ul {
+    margin: 0;
+    padding-left: 1.2rem;
+}
+
+#finance-summary li {
+    margin-bottom: 0.5rem;
+}
+
 /* ========================================
    5. UTILITY CLASSES
    ======================================== */
