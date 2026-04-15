@@ -247,12 +247,34 @@ document.addEventListener('DOMContentLoaded', function () {
             const output = document.getElementById('variable-cost-total');
             if (output) {
                 output.textContent = `Total variable costs: $${formatCurrency(totalVariableCosts)}`;
+                console.log(`Total variable costs: $${formatCurrency(totalVariableCosts)}`);
             }
         });
     }
+    
+
+    
 });
+
 
 function formatCurrency(amount) {
     return amount.toFixed(2);
 }
 
+
+
+// Running total update instantly
+const inputs = document.querySelectorAll('.amount');
+const totalDisplay = document.getElementById('total');
+
+inputs.forEach(input => {
+    input.addEventListener('input', updateTotal);
+});
+
+function updateTotal() {
+    let sum = 0;
+    inputs.forEach(input => {
+        sum += parseFloat(input.value) || 0;
+    });
+    totalDisplay.textContent = '$' + sum.toFixed(2);
+}
