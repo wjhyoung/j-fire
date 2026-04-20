@@ -1,522 +1,443 @@
-/* ========================================
-   1. LAYOUT & STRUCTURE
-   ======================================== */
+/* ============================================================
+   J FIRE — components.css
+   Minimalist Bootstrap-compatible component overrides & custom
+   ============================================================ */
 
-header {
-    background-color: #f8f8f8;
-    padding: 1rem 2rem;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+/* -------------------------------------------------- *
+   LAYOUT
+ * -------------------------------------------------- */
+
+.jf-wrapper {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 0 var(--sp-4);
 }
 
-nav {
-    width: 90% auto;
-    padding: 1rem;
-    display: flex;
-    gap: 1rem;
-    align-items: center;
-    background: var(--bg-soft);
+/* -------------------------------------------------- *
+   SKIP LINK (Accessibility)
+ * -------------------------------------------------- */
+
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: var(--sp-4);
+  background: var(--text);
+  color: #fff;
+  padding: var(--sp-2) var(--sp-4);
+  border-radius: 0 0 var(--radius-md) var(--radius-md);
+  z-index: 9999;
+  transition: top var(--transition);
+}
+.skip-link:focus { top: 0; }
+
+/* -------------------------------------------------- *
+   NAVBAR
+ * -------------------------------------------------- */
+
+.navbar-jf {
+  background: var(--surface-alt);
+  border-bottom: 1px solid var(--border);
+  padding: var(--sp-3) 0;
 }
 
-main {
-    min-height: calc(100vh - 100px);
-    padding: 2rem;
+.navbar-brand-jf img {
+  height: 36px;
+  width: auto;
 }
 
-section {
-    margin-bottom: 2rem;
-    padding: 2rem 0;
+/* Override Bootstrap nav-link colours */
+.navbar-jf .nav-link {
+  color: var(--text-muted);
+  font-size: 0.875rem;
+  font-weight: 500;
+  padding: var(--sp-2) var(--sp-3);
+  border-radius: var(--radius-sm);
+  transition: color var(--transition), background var(--transition);
 }
+.navbar-jf .nav-link:hover,
+.navbar-jf .nav-link:focus {
+  color: var(--text);
+  background: var(--blush);
+}
+.navbar-jf .nav-link.active {
+  color: var(--coral);
+  background: transparent;
+}
+
+/* -------------------------------------------------- *
+   AUTH OVERLAY
+ * -------------------------------------------------- */
+
+#auth-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(13,13,13,.72);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 8000;
+  animation: fadeIn 220ms ease;
+}
+
+#auth-overlay.hidden { display: none; }
+
+.auth-card {
+  background: var(--surface-alt);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: var(--sp-8);
+  width: min(420px, 94vw);
+  box-shadow: var(--shadow-md);
+}
+
+.auth-card .tab-btn {
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  padding: var(--sp-2) var(--sp-4);
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: color var(--transition), border-color var(--transition);
+}
+.auth-card .tab-btn.active {
+  color: var(--coral);
+  border-bottom-color: var(--coral);
+}
+
+.auth-panel { display: none; }
+.auth-panel.active { display: block; }
+
+#auth-message {
+  font-size: 0.8rem;
+  min-height: 1.2rem;
+  margin-top: var(--sp-2);
+}
+
+/* -------------------------------------------------- *
+   HERO
+ * -------------------------------------------------- */
+
+#main-landing {
+  padding: var(--sp-12) 0 var(--sp-8);
+  text-align: center;
+}
+
+#main-landing .hero-lede {
+  font-size: 1.1rem;
+  color: var(--text-muted);
+  margin: 0 auto var(--sp-6);
+  max-width: 52ch;
+}
+
+#main-landing .hero-images {
+  display: flex;
+  gap: var(--sp-4);
+  justify-content: center;
+  flex-wrap: wrap;
+  margin: var(--sp-6) 0;
+}
+
+#main-landing .hero-images img {
+  width: 180px;
+  height: 140px;
+  object-fit: cover;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+}
+
+/* -------------------------------------------------- *
+   SECTION CHROME
+ * -------------------------------------------------- */
+
+.jf-section {
+  background: var(--surface-alt);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: var(--sp-8);
+  margin-bottom: var(--sp-6);
+  box-shadow: var(--shadow-sm);
+}
+
+.jf-section-title {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--text-muted);
+  margin-bottom: var(--sp-6);
+  padding-bottom: var(--sp-3);
+  border-bottom: 1px solid var(--border);
+}
+
+/* -------------------------------------------------- *
+   FORM CONTROLS (Bootstrap override)
+ * -------------------------------------------------- */
+
+.form-label {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--text);
+  margin-bottom: var(--sp-1);
+}
+
+.form-control, .form-select {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 0.55rem 0.75rem;
+  font-size: 0.9rem;
+  background: var(--surface-alt);
+  color: var(--text);
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+.form-control:focus, .form-select:focus {
+  border-color: var(--border-focus);
+  box-shadow: 0 0 0 3px rgba(54,176,235,.15);
+  outline: none;
+}
+
+.form-control::placeholder { color: var(--text-muted); opacity: .7; }
+
+/* -------------------------------------------------- *
+   BUTTONS
+ * -------------------------------------------------- */
+
+.btn-jf-primary {
+  background: var(--coral);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 0.6rem 1.4rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  transition: background var(--transition), transform var(--transition);
+}
+.btn-jf-primary:hover  { background: #d96535; transform: translateY(-1px); }
+.btn-jf-primary:active { transform: none; }
+
+.btn-jf-secondary {
+  background: transparent;
+  color: var(--text-muted);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 0.6rem 1.4rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: border-color var(--transition), color var(--transition);
+}
+.btn-jf-secondary:hover {
+  border-color: var(--sky);
+  color: var(--sky);
+}
+
+/* -------------------------------------------------- *
+   INLINE STATUS / LIVE REGION
+ * -------------------------------------------------- */
+
+.jf-status {
+  font-size: 0.82rem;
+  padding: var(--sp-3) var(--sp-4);
+  border-radius: var(--radius-sm);
+  margin-top: var(--sp-3);
+  background: var(--sage);
+  border: 1px solid #b6d4b8;
+  color: #2a5c2e;
+  animation: fadeIn 200ms ease;
+  display: none;
+}
+.jf-status.visible { display: block; }
+.jf-status.error {
+  background: #fdecea;
+  border-color: #f5c2bb;
+  color: #8b2318;
+}
+
+/* -------------------------------------------------- *
+   COST TOTALS / SUMMARY CARD
+ * -------------------------------------------------- */
+
+.jf-summary {
+  background: var(--blush);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: var(--sp-4) var(--sp-6);
+  margin-top: var(--sp-4);
+}
+
+.jf-summary dl {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: var(--sp-2) var(--sp-4);
+  font-size: 0.875rem;
+}
+
+.jf-summary dt { color: var(--text-muted); }
+.jf-summary dd { text-align: right; font-weight: 500; font-family: 'DM Mono', monospace; }
+
+.jf-grand-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-top: var(--sp-4);
+  padding-top: var(--sp-3);
+  border-top: 1px solid var(--border);
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.jf-grand-total span { font-family: 'DM Mono', monospace; color: var(--coral); }
+
+/* -------------------------------------------------- *
+   5-YEAR CHART CANVAS
+ * -------------------------------------------------- */
+
+#budget-chart-container {
+  margin-top: var(--sp-6);
+  padding: var(--sp-6);
+  background: var(--surface-alt);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+}
+
+#budget-chart-container h3 {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  margin-bottom: var(--sp-4);
+}
+
+#budgetChart { width: 100% !important; }
+
+/* -------------------------------------------------- *
+   PROJECT SAVED BADGE
+ * -------------------------------------------------- */
+
+#project-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  background: var(--sage);
+  border: 1px solid #b6d4b8;
+  border-radius: 999px;
+  padding: var(--sp-1) var(--sp-3);
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: #2a5c2e;
+  margin-bottom: var(--sp-4);
+  display: none;
+}
+#project-badge.visible { display: inline-flex; }
+
+/* -------------------------------------------------- *
+   FINANCE FORMS — locked state
+ * -------------------------------------------------- */
+
+.budget-forms-wrapper {
+  position: relative;
+}
+
+.budget-forms-wrapper.locked::after {
+  content: 'Save a project above to unlock budget forms';
+  position: absolute;
+  inset: 0;
+  background: rgba(249,249,249,.88);
+  backdrop-filter: blur(3px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  font-weight: 500;
+  border-radius: var(--radius-md);
+  border: 1px dashed var(--border);
+  pointer-events: all;
+  z-index: 10;
+}
+
+.budget-forms-wrapper.locked > * { pointer-events: none; user-select: none; opacity: .4; }
+.budget-forms-wrapper.unlocked::after { display: none; }
+.budget-forms-wrapper.unlocked > * { opacity: 1; pointer-events: auto; }
+
+/* -------------------------------------------------- *
+   FOOTER
+ * -------------------------------------------------- */
 
 footer {
-    background-color: #f8f8f8;
-    padding: 2rem;
-    text-align: center;
-    border-top: 1px solid var(--border);
-    margin-top: 2rem;
+  border-top: 1px solid var(--border);
+  padding: var(--sp-8) 0 var(--sp-6);
+  text-align: center;
+  background: var(--surface-alt);
+  margin-top: var(--sp-8);
 }
 
 footer p {
-    margin: 0.5rem 0;
-    font-size: 0.9em;
-    color: var(--text-subtle);
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-bottom: var(--sp-2);
 }
 
-header,
-footer,
-section {
-    background: var(--surface);
-    border: 1px solid var(--border);
+.footer-nav {
+  display: flex;
+  justify-content: center;
+  gap: var(--sp-4);
+  flex-wrap: wrap;
+  margin-top: var(--sp-4);
 }
 
-p {
-    padding:1rem;
+.footer-nav a {
+  font-size: 0.8rem;
+  color: var(--text-muted);
 }
 
-/* ========================================
-   2. NAVIGATION STYLES
-   ======================================== */
+/* -------------------------------------------------- *
+   UTILITIES
+ * -------------------------------------------------- */
 
-.topNav {
-    display: flex;
-    flex-direction: column;
-    text-align: left;
-    margin: 0;
-    padding: 1rem;
-    /* font-style: italic; */
-    border: 1px solid var(--border);
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+.hidden { display: none !important; }
+.visually-hidden {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  white-space: nowrap;
+  border: 0;
 }
 
-.bottomNav {
-    display: flex;
-    flex-direction: column;
-    text-align: left;
-    margin: 0;
-    padding: 1rem;
-    background: #fff;
-    border: 1px solid var(--border);
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-}
-
-.topNavGraphic {
-    width: 50%;
-}
-
-.topNavBar {
-    width: 100%;
-}
-
-.topNavBar ul {
-    display: flex;
-    flex-direction: row;
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    gap: 1rem;
-}
-
-.topNavBar li {
-    margin: 0;
-}
-
-/* ========================================
-   3. HERO SECTION STYLES
-   ======================================== */
-
-#main-landing img {
-    width: 200px;
-    height: auto;
-    margin: 1rem auto;
-    border-radius: 8px;
-    display: block;
-}
-
-/* ========================================
-   4. FORM STYLES
-   ======================================== */
-
-.form {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    max-width: 400px;
-    margin: 2rem 0;
-}
-
-.form div {
-    display: flex;
-    flex-direction: column;
-}
-
-.form label {
-    margin-bottom: 0.5rem;
-    font-weight: bold;
-    color: var(--text-base);
-}
-
-.form input,
-.form textarea,
-.form select {
-    padding: 0.75rem;
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    font-size: 16px;
-    font-family: inherit;
-    background: #fff;
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-.form input:focus,
-.form textarea:focus,
-.form select:focus {
-    outline: none;
-    border-color: #36B0EB;
-    box-shadow: 0 0 5px rgba(54, 176, 235, 0.3);
-}
-
-.form textarea {
-    resize: vertical;
-}
-
-.form input[type="submit"],
-.form button {
-    background-color: #36B0EB;
-    color: white;
-    border: none;
-    cursor: pointer;
-    padding: 0.75rem 1.5rem;
-    font-size: 18px;
-    margin-top: 1rem;
-    border-radius: 4px;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-}
-
-.form input[type="submit"]:hover,
-.form button:hover {
-    background-color: #F07D4A;
-    /* palette color */
-    transform: translateY(-2px);
-}
-
-.form input[type="submit"]:active,
-.form button:active {
-    transform: translateY(0);
-}
-
-#finance-summary {
-    background: var(--bg-soft);
-    border: 1px solid var(--brand-secondary);
-    border-radius: 10px;
-    padding: 1rem;
-    color: var(--text-base);
-    max-width: 400px;
-}
-
-#finance-summary p {
-    margin: 0 0 0.75rem;
-    font-weight: 700;
-    color: var(--brand-secondary);
-}
-
-#finance-summary ul {
-    margin: 0;
-    padding-left: 1.2rem;
-}
-
-#finance-summary li {
-    margin-bottom: 0.5rem;
-}
-
-/* ========================================
-   5. UTILITY CLASSES
-   ======================================== */
-
-.bio {
-    display: flex;
-    flex-direction: column;
-    text-align: left;
-    margin: 0;
-    padding: 1rem;
-    background: #fff;
-    border: 1px solid var(--border);
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-}
-
-.center {
-    display: block;
-    margin: 0 auto;
-}
-
-img.center {
-    width: 98%;
-    padding: 1rem;
-    margin: 1rem auto;
-}
-
-.hidden {
-    display: none !important;
-}
-
-.invisible {
-    visibility: hidden;
-}
-
-.text-center {
-    text-align: center;
-}
-
-.text-left {
-    text-align: left;
-}
-
-.text-right {
-    text-align: right;
-}
-
-.mt-1 {
-    margin-top: 0.5rem;
-}
-
-.mt-2 {
-    margin-top: 1rem;
-}
-
-.mt-3 {
-    margin-top: 1.5rem;
-}
-
-.mt-4 {
-    margin-top: 2rem;
-}
-
-.mb-1 {
-    margin-bottom: 0.5rem;
-}
-
-.mb-2 {
-    margin-bottom: 1rem;
-}
-
-.mb-3 {
-    margin-bottom: 1.5rem;
-}
-
-.mb-4 {
-    margin-bottom: 2rem;
-}
-
-.p-1 {
-    padding: 0.5rem;
-}
-
-.p-2 {
-    padding: 1rem;
-}
-
-.p-3 {
-    padding: 1.5rem;
-}
-
-.p-4 {
-    padding: 2rem;
-}
-
-/* ========================================
-   6. COLOR PALETTE
-   ======================================== */
-
-/* Primary Colors */
-:root {
-    --brand-primary: #F07D4A;
-    /* warm coral */
-    --brand-secondary: #36B0EB;
-    /* cool light blue */
-    --bg-soft: #e9dce0;
-    /* pale pink-beige */
-    --muted-green: #DCEADE;
-    /* soft green */
-    --muted-lime: #DAD8EA;
-    /* light lavender */
-    --text-base: #0D0D0D;
-    --text-subtle: #666666;
-    --border: #cccccc;
-    --surface: #f8f8f8;
-}
-
-/* ========================================
-   7. RESPONSIVE DESIGN
-   ======================================== */
-
-@media screen and (max-width: 768px) {
-    h1 {
-        font-size: 2em;
-    }
-
-    h2 {
-        font-size: 1.5em;
-    }
-
-    main {
-        padding: 1rem;
-    }
-
-    section {
-        padding: 1rem 0;
-    }
-
-    .form {
-        max-width: 100%;
-    }
-
-    nav {
-        flex-wrap: wrap;
-        gap: 0.5rem;
-    }
-
-    header {
-        padding: 1rem;
-    }
-
-    footer {
-        padding: 1rem;
-    }
-}
-
-@media screen and (max-width: 480px) {
-    html {
-        font-size: 14px;
-    }
-
-    h1 {
-        font-size: 1.5em;
-    }
-
-    h2 {
-        font-size: 1.25em;
-    }
-
-    main {
-        padding: 0.5rem;
-    }
-
-    nav {
-        flex-direction: column;
-    }
-
-    header {
-        padding: 0.5rem;
-    }
-
-    footer {
-        padding: 0.5rem;
-    }
-}
-
-/* ========================================
-   8. ACCESSIBILITY
-   ======================================== */
-
-/* Skip to main content link */
-.skip-link {
-    position: absolute;
-    top: -9999px;
-    left: -9999px;
-}
-
-.skip-link:focus {
-    top: 0;
-    left: 0;
-    padding: 10px;
-    background-color: #000;
-    color: #fff;
-    z-index: 1000;
-}
-
-/* Focus visible for keyboard navigation */
-:focus-visible {
-    outline: 2px solid #36B0EB;
-    outline-offset: 2px;
-}
-
-/* ========================================
-   9. ANIMATION & TRANSITIONS
-   ======================================== */
+/* -------------------------------------------------- *
+   ANIMATIONS
+ * -------------------------------------------------- */
 
 @keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-
-    to {
-        opacity: 1;
-    }
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: none; }
 }
 
-@keyframes slideDown {
-    from {
-        transform: translateY(-10px);
-        opacity: 0;
-    }
-
-    to {
-        transform: translateY(0);
-        opacity: 1;
-    }
-}
-
-:root {
-    --primary-dark: #F07D4A;
-    /* palette */
-    --primary-light: #36B0EB;
-    /* palette */
-    --accent-light: #DCEADE;
-    /* palette */
-    --accent-lighter: #e9dce0;
-    /* palette */
-    --accent-dark: #000000;
-    /* black */
-    --text-dark: #0D0D0D;
-    --text-light: #666;
-    --border-color: #ccc;
-    --bg-light: #f8f8f8;
-    --bg-white: #ffffff;
-}
-
-/* ========================================
-   10. PRINT STYLES
-   ======================================== */
+/* -------------------------------------------------- *
+   PRINT
+ * -------------------------------------------------- */
 
 @media print {
-    body {
-        background: white;
-        color: black;
-    }
-
-    header,
-    nav,
-    footer {
-        display: none;
-    }
-
-    a {
-        color: black;
-        text-decoration: underline;
-    }
+  header, nav, footer, #auth-overlay, .btn-jf-primary, .btn-jf-secondary { display: none; }
+  body { background: #fff; color: #000; }
+  .jf-section { border: 1px solid #ccc; box-shadow: none; }
 }
 
-main {
-    background-color: #DCEADE;
-    /* Cool light green */
+/* -------------------------------------------------- *
+   RESPONSIVE
+ * -------------------------------------------------- */
+
+@media (max-width: 768px) {
+  .jf-section { padding: var(--sp-6) var(--sp-4); }
+  #main-landing .hero-images img { width: 140px; height: 110px; }
 }
 
-header {
-    background-color: #EBB8AD;
-    /* Warm light pink */
-}
-
-footer {
-    background-color: #DAD8EA;
-    /* Cool light purple */
-}
-
-/* ========================================
-   11. SING-UP FORM BASIC STYLES
-   ======================================== */
-
-form.form {
-    display: table;
-}
-
-div.form {
-    display: table-row;
-}
-
-label,
-input {
-    display: table-cell;
-    margin-bottom: 10px;
-}
-
-label {
-    padding-right: 10px;
+@media (max-width: 480px) {
+  html { font-size: 15px; }
+  .jf-summary dl { grid-template-columns: 1fr; }
+  .jf-summary dd { text-align: left; }
 }
