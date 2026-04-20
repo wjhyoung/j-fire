@@ -1,357 +1,503 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<!-- Welcome to the code for J Fire, the simple clinical trial budgeting tool !! :) -->
+<!--
+  J Fire — Clinical Trial Budgeting Tool
+  Author: wjhyoung
+  Licence: MIT
+-->
 
 <head>
-    <!-- ========================================
-         Document Metadata
-         ======================================== -->
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <meta name="description" content="J Fire - A free, user-friendly financial dashboard for clinical research" />
-    <meta name="keywords" content="clinical research, budget, financial dashboard" />
-    <meta name="author" content="wjhyoung" />
-    <meta name="theme-color" content="#36B0EB" />
+  <!-- ── Metadata ─────────────────────────────────── -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="J Fire — a free, minimalist financial dashboard for clinical research budgeting." />
+  <meta name="author" content="wjhyoung" />
+  <meta name="theme-color" content="#36B0EB" />
 
-    <!-- ========================================
-         Page Title
-         ======================================== -->
-    <title>J Fire - Financial Dashboard for Clinical Research</title>
+  <title>J Fire · Clinical Trial Budget Tool</title>
 
-    <!-- ========================================
-         Stylesheets
-         ======================================== -->
-    <!-- <link rel="stylesheet" href="app.css" type="text/css" /> -->
-    <link rel="stylesheet" href="Styles/reset.css" type="text/css" />
-    <link rel="stylesheet" href="Styles/typography.css" type="text/css" />
-    <link rel="stylesheet" href="Styles/components.css" type="text/css" />
+  <!-- ── Open Graph ────────────────────────────────── -->
+  <meta property="og:title" content="J Fire · Clinical Trial Budget Tool" />
+  <meta property="og:description" content="A free, minimalist financial dashboard for clinical research." />
+  <meta property="og:type" content="website" />
 
-    <!-- ========================================
-         Favicon & App Icons
-         ======================================== -->
-    <link rel="icon" href="favicon.png" />
-    <!-- <link rel="apple-touch-icon" href="apple-touch-icon.png" /> -->
+  <!-- ── Favicon ───────────────────────────────────── -->
+  <link rel="icon" href="favicon.png" />
 
-    <!-- ========================================
-         Preconnect to External Resources
-         ======================================== -->
-    <!-- <link rel="preconnect" href="https://fonts.googleapis.com" /> -->
-    <!-- <link rel="preconnect" href="https://cdn.example.com" /> -->
+  <!-- ── Bootstrap 5 ───────────────────────────────── -->
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+        crossorigin="anonymous" />
 
-    <!-- ========================================
-         Open Graph Meta Tags (Social Media)
-         ======================================== -->
-    <meta property="og:title" content="J Fire - Financial Dashboard for Clinical Research" />
-    <meta property="og:description" content="A free, user-friendly financial dashboard for clinical research" />
-    <meta property="og:type" content="website" />
-    <!-- <meta property="og:image" content="og-image.png" /> -->
-    <!-- <meta property="og:url" content="https://jfire.com" /> -->
+  <!-- ── Project Styles ────────────────────────────── -->
+  <link rel="stylesheet" href="Styles/reset.css" />
+  <link rel="stylesheet" href="Styles/typography.css" />
+  <link rel="stylesheet" href="Styles/components.css" />
 
-    <!-- ========================================
-         Twitter Card Meta Tags
-         ======================================== -->
-    <meta name="twitter:card" content="summary_large_image" />
-    <!-- <meta name="twitter:creator" content="@jfire" /> -->
+  <!-- ── Chart.js ──────────────────────────────────── -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
 </head>
 
 <body>
-    <!-- ========================================
-         Skip to Main Content Link (Accessibility)
-         ======================================== -->
-    <a href="#main-content" class="skip-link">Skip to main content</a>
 
-    <!-- ========================================
-         Header & Navigation
-         ======================================== -->
-    <header role="banner">
-        <nav role="navigation" aria-label="Main Navigation" class="topNav">
-            <div class="topNavGraphic">
-                <a href="index.html"><img class="topNavGraphic" src="Images/design-button-light.svg"
-                        alt="Light geometric branding logo"></a>
-            </div>
-            <div class="topNavBar">
-                <ul>
-                    <li><a href="#sign-up">Sign Up</a></li>
-                    <li><a href="#sign-in">Sign In</a></li>
-                    <li><a href="#budget-entry">Budget tool</a></li>
-                    <li><a href="#track">Track</a></li>
-                    <li><a href="#receive">Receive</a></li>
-                    <li><a href="#pay">Pay</a></li>
-                    <li><a href="#about">About</a></li>
-                </ul>
-            </div>
-        </nav>
-    </header>
+  <!-- ── Skip link ─────────────────────────────────── -->
+  <a href="#main-content" class="skip-link">Skip to main content</a>
 
-    <!-- ========================================
-         Main Content
-         ======================================== -->
-    <main id="main-content" role="main">
-        <!-- Hero Section -->
-        <section id="main-landing" class="hero-section">
-            <h1>Enter a protocol - J Fire</h1>
-            <p>J Fire is a free, user-friendly financial dashboard for clinical research</p>
-            <img src="Images/trippy-computer.gif" alt="Trippy stock photo back of server tower">
-            <p>Connect to reliable, secure servers from any device</p>
-            <img src="Images/fake-tattoo.jpg" alt="Ironic trippy flame tattoo style graphic">
-            <p>Manage a team with lean, fast data insight</p>
-            <img src="Images/happy-spreadsheet.jpg" alt="Random spreadsheet stock image">
-            <p>Feel comfortable in the examining room and the board room</p>
-            <button>Sign up</button>
-        </section>
+  <!-- ── Auth overlay ──────────────────────────────── -->
+  <!--
+    Blocks the page until the user signs up or signs in.
+    Controlled by JS.  Uses role="dialog" for screen readers.
+  -->
+  <div id="auth-overlay" role="dialog" aria-modal="true" aria-labelledby="auth-overlay-title">
+    <div class="auth-card">
+      <h1 id="auth-overlay-title" class="h5 mb-4" style="letter-spacing:-.02em;">J Fire</h1>
 
-        <!-- Sign Up Section -->
-        <section id="sign-up" aria-labelledby="signup-heading">
-            <h2 id="signup-heading">Sign up</h2>
-            <form action="" method="post" class="form" novalidate>
-                <div class="form">
-                    <label for="username">Username: </label>
-                    <input type="text" name="username" id="username" required aria-required="true" />
-                </div>
-                <div class="form">
-                    <label for="password">Password: </label>
-                    <input type="password" name="password" id="password" required aria-required="true" />
-                </div>
-                <div class="form">
-                    <label for="email">Email for verification: </label>
-                    <input type="email" name="email" id="email" required aria-required="true" />
-                </div>
-                <div class="form">
-                    <input type="submit" value="Sign Up" class="btn-primary" />
-                </div>
-            </form>
-        </section>
+      <!-- Tab switcher -->
+      <div class="d-flex gap-3 mb-4" role="tablist">
+        <button class="tab-btn active"
+                id="tab-signin-btn"
+                role="tab"
+                aria-selected="true"
+                aria-controls="tab-signin">Sign in</button>
+        <button class="tab-btn"
+                id="tab-signup-btn"
+                role="tab"
+                aria-selected="false"
+                aria-controls="tab-signup">Create account</button>
+      </div>
 
-        <!-- Sign In Section -->
-        <section id="sign-in" aria-labelledby="signin-heading">
-            <h2 id="signin-heading">Sign in to J Fire</h2>
-            <form action="" method="post" class="form signin-form" novalidate>
-                <div class="form">
-                    <label for="signin-username">Username: </label>
-                    <input type="text" name="username" id="signin-username" required aria-required="true" />
-                </div>
-                <div class="form">
-                    <label for="signin-password">Password: </label>
-                    <input type="password" name="password" id="signin-password" required aria-required="true" />
-                </div>
-                <div class="form">
-                    <input type="submit" value="Sign In" class="btn-primary" />
-                </div>
-            </form>
-        </section>
+      <!-- Sign-in panel -->
+      <div id="tab-signin" class="auth-panel active" role="tabpanel" aria-labelledby="tab-signin-btn">
+        <form id="signin-form" novalidate>
+          <div class="mb-3">
+            <label class="form-label" for="signin-username">Username</label>
+            <input class="form-control"
+                   type="text"
+                   id="signin-username"
+                   name="username"
+                   autocomplete="username"
+                   required
+                   aria-required="true" />
+          </div>
+          <div class="mb-3">
+            <label class="form-label" for="signin-password">Password</label>
+            <input class="form-control"
+                   type="password"
+                   id="signin-password"
+                   name="password"
+                   autocomplete="current-password"
+                   required
+                   aria-required="true" />
+          </div>
+          <button type="submit" class="btn-jf-primary w-100">Sign in</button>
+        </form>
+      </div>
 
-        <!-- Budget Entry Section -->
-        <section id="budget-entry" aria-labelledby="budget-heading">
-            <h2 id="budget-heading">Build a trial budget</h2>
-            <p>Use this form to construct a clinical trial budget from the ground up</p>
+      <!-- Sign-up panel -->
+      <div id="tab-signup" class="auth-panel" role="tabpanel" aria-labelledby="tab-signup-btn">
+        <form id="signup-form" novalidate>
+          <div class="mb-3">
+            <label class="form-label" for="signup-username">Username</label>
+            <input class="form-control"
+                   type="text"
+                   id="signup-username"
+                   name="username"
+                   autocomplete="username"
+                   required
+                   aria-required="true" />
+          </div>
+          <div class="mb-3">
+            <label class="form-label" for="signup-email">Email</label>
+            <input class="form-control"
+                   type="email"
+                   id="signup-email"
+                   name="email"
+                   autocomplete="email"
+                   required
+                   aria-required="true" />
+          </div>
+          <div class="mb-3">
+            <label class="form-label" for="signup-password">Password</label>
+            <input class="form-control"
+                   type="password"
+                   id="signup-password"
+                   name="password"
+                   autocomplete="new-password"
+                   required
+                   aria-required="true"
+                   minlength="6" />
+            <div class="form-text">Minimum 6 characters.</div>
+          </div>
+          <button type="submit" class="btn-jf-primary w-100">Create account</button>
+        </form>
+      </div>
 
-            <!-- Basic trial set-up -->
-            <form action="" method="post" class="form budget-form" novalidate>
-                <div class="form">
-                    <label for="budget-name">Project name: </label>
-                    <input type="text" name="budget-name" id="budget-name" required aria-required="true" />
-                </div>
-                <div class="form">
-                    <label for="sponsor-name">Project sponsor: </label>
-                    <input type="text" name="sponsor-name" id="sponsor-name" required aria-required="true" />
-                </div>
-                <div class="form">
-                    <label for="protocol-name">Protocol number: </label>
-                    <input type="text" name="protocol-name" id="protocol-name" required aria-required="true" />
-                </div>
-                <div class="form">
-                    <label for="study-name">Full study title: </label>
-                    <input type="text" name="study-name" id="study-name" required aria-required="true" />
-                </div>
-                <div class="form">
-                    <label for="disease-name">Disease: </label>
-                    <input type="text" name="disease-name" id="disease-name" required aria-required="true" />
-                </div>
-                <div class="form">
-                    <label for="category-name">Disease category: </label>
-                    <input type="text" name="category-name" id="category-name" required aria-required="true" />
-                </div>
-                <div class="form">
-                    <label for="initial-date">Date of initial contact: </label>
-                    <input type="text" name="initial-date" id="initial-date" required aria-required="true" />
-                </div>
-                <p>To analyze & track this project, you may save the project</p>
-                <div class="form">
-                    <button type="submit">Create project !!:D</button>
-                </div>
-                <div class="form">
-                    <button type="button" id="load-budget">Load saved project</button>
-                </div>
-                <div class="form" id="budget-load-result" aria-live="polite"></div>
-            </form>
+      <!-- Shared status message for both panels -->
+      <p id="auth-message" role="alert" aria-live="assertive"></p>
+    </div>
+  </div>
 
+  <!-- ── Header / Navbar ───────────────────────────── -->
+  <header role="banner">
+    <nav class="navbar navbar-expand-md navbar-jf" aria-label="Main navigation">
+      <div class="container-fluid jf-wrapper">
 
-            <!-- Project finance overview form -->
-            <h3>Project Finance Overview</h3>
-            <form action="" method="post" class="form finance-form" novalidate>
-                <div class="form">
-                    <label for="enrollment-start">Enrollment start date: </label>
-                    <input type="date" name="enrollment-start" id="enrollment-start" min="" required aria-required="true" />
-                </div>
-                <div class="form">
-                    <label for="patients-low">Patients enrolled (low): </label>
-                    <input type="number" name="patients-low" id="patients-low" min="0" required aria-required="true" />
-                </div>
-                <div class="form">
-                    <label for="patients-high">Patients enrolled (high): </label>
-                    <input type="number" name="patients-high" id="patients-high" min="0" required aria-required="true" />
-                </div>
-                <div class="form">
-                    <label for="screen-fail-rate">Screen fail rate (%): </label>
-                    <input type="number" name="screen-fail-rate" id="screen-fail-rate" min="0" max="100" step="0.01" required aria-required="true" />
-                </div>
-                <div class="form">
-                    <label for="close-out-date">Close out date: </label>
-                    <input type="date" name="close-out-date" id="close-out-date" required aria-required="true" />
-                </div>
-                <div class="form">
-                    <label for="overhead-rate">Overhead rate (%): </label>
-                    <input type="number" name="overhead-rate" id="overhead-rate" min="0" step="0.01" required aria-required="true" />
-                </div>
-                <div class="form">
-                    <label for="inflation-rate">Inflation rate (%): </label>
-                    <input type="number" name="inflation-rate" id="inflation-rate" step="0.01" required aria-required="true" />
-                </div>
-                <div class="form">
-                    <input type="submit" value="Calculate Budget" class="btn-primary" />
-                </div>
-                <div class="form">
-                    <div id="finance-summary" aria-live="polite">Budget summary will appear here after calculation.</div>
-                </div>
-            </form>
+        <!-- Brand -->
+        <a class="navbar-brand navbar-brand-jf" href="index.html" aria-label="J Fire home">
+          <!-- Fallback text logo if SVG missing -->
+          <strong style="font-size:1.1rem; letter-spacing:-.03em; color:var(--coral);">J Fire</strong>
+        </a>
 
+        <!-- Mobile toggle -->
+        <button class="navbar-toggler border-0"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#primary-nav"
+                aria-controls="primary-nav"
+                aria-expanded="false"
+                aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
 
-            <!-- Fixed cost form -->
-            <h3>Fixed Cost Calculator</h3>
-            <form action="" method="post" class="form fixed-cost-form" novalidate>
-                <div class="form">
-                    <label for="initial-feasibility-review">Initial feasibility review:</label>
-                    <input type="number" name="initial-feasibility-review" id="initial-feasibility-review" min="0" step="0.01" required aria-required="true" />
-                </div>
-                <div class="form">
-                    <label for="lab-setup">Lab set-up:</label>
-                    <input type="number" name="lab-setup" id="lab-setup" min="0" step="0.01" required aria-required="true" />
-                </div>
-                <div class="form">
-                    <label for="mri-setup">MRI set-up:</label>
-                    <input type="number" name="mri-setup" id="mri-setup" min="0" step="0.01" required aria-required="true" />
-                </div>
-                <div class="form">
-                    <label for="basic-startup-cost">Basic start-up cost:</label>
-                    <input type="number" name="basic-startup-cost" id="basic-startup-cost" min="0" step="0.01" required aria-required="true" />
-                </div>
-                <div class="form">
-                    <label for="yearly-ethics-review">Yearly ethics review:</label>
-                    <input type="number" name="yearly-ethics-review" id="yearly-ethics-review" min="0" step="0.01" required aria-required="true" />
-                </div>
-                <div class="form">
-                    <label for="pharmacy-maintenance">Pharmacy maintenance:</label>
-                    <input type="number" name="pharmacy-maintenance" id="pharmacy-maintenance" min="0" step="0.01" required aria-required="true" />
-                </div>
-                <div class="form">
-                    <label for="annual-fee">Annual fee:</label>
-                    <input type="number" name="annual-fee" id="annual-fee" min="0" step="0.01" required aria-required="true" />
-                </div>
-                <div class="form">
-                    <label for="labor">Labor:</label>
-                    <input type="number" name="labor" id="labor" min="0" step="0.01" required aria-required="true" />
-                </div>
-                <div class="form">
-                    <input type="submit" value="Calculate Fixed Costs" class="btn-primary" />
-                </div>
-                <div class="form">
-                    <p id="fixed-cost-total" aria-live="polite">Total fixed costs: $0.00</p>
-                </div>
-            </form>
-            <p>Accordingly, your budget total is ___</p>
+        <!-- Nav links -->
+        <div class="collapse navbar-collapse" id="primary-nav">
+          <ul class="navbar-nav ms-auto gap-1">
+            <li class="nav-item"><a class="nav-link" href="#budget-entry">Budget</a></li>
+            <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
+            <li class="nav-item">
+              <button id="signout-btn"
+                      class="btn-jf-secondary ms-2"
+                      style="font-size:.8rem; padding:.35rem 1rem;">Sign out</button>
+            </li>
+          </ul>
+        </div>
 
-            <!-- Variable costs form -->
-            <h3>Variable Cost Calculator</h3>
-            <form action="" method="post" class="form variable-cost-form" novalidate>
-                <div class="form">
-                    <label for="professional-fees">Professional fees:</label>
-                    <input type="number" name="professional-fees" id="professional-fees" min="0" step="0.01" required aria-required="true" />
-                </div>
-                <div class="form">
-                    <label for="mri">MRI:</label>
-                    <input type="number" name="mri" id="mri" min="0" step="0.01" required aria-required="true" />
-                </div>
-                <div class="form">
-                    <label for="nursing">Nursing:</label>
-                    <input type="number" name="nursing" id="nursing" min="0" step="0.01" required aria-required="true" />
-                </div>
-                <div class="form">
-                    <label for="administration">Administration:</label>
-                    <input type="number" name="administration" id="administration" min="0" step="0.01" required aria-required="true" />
-                </div>
-                <div class="form">
-                    <label for="pi-fees">PI Fees:</label>
-                    <input type="number" name="pi-fees" id="pi-fees" min="0" step="0.01" required aria-required="true" />
-                </div>
-                <div class="form">
-                    <label for="coordinator-fees">Coordinator fees:</label>
-                    <input type="number" name="coordinator-fees" id="coordinator-fees" min="0" step="0.01" required aria-required="true" />
-                </div>
-                <div class="form">
-                    <label for="supplies">Supplies:</label>
-                    <input type="number" name="supplies" id="supplies" min="0" step="0.01" required aria-required="true" />
-                </div>
-                <div class="form">
-                    <label for="lab-time">Lab time:</label>
-                    <input type="number" name="lab-time" id="lab-time" min="0" step="0.01" required aria-required="true" />
-                </div>
-                <div class="form">
-                    <input type="submit" value="Calculate Variable Costs" class="btn-primary" />
-                </div>
-                <div class="form">
-                    <p id="variable-cost-total" aria-live="polite">Total variable costs: $0.00</p>
-                </div>
-            </form>
+      </div>
+    </nav>
+  </header>
 
-        </section>
-    </main>
+  <!-- ── Main ──────────────────────────────────────── -->
+  <main id="main-content" role="main">
+    <div class="jf-wrapper py-4">
 
-    <!-- ========================================
-         Footer
-         ======================================== -->
-    <footer role="contentinfo">
-        <p>&copy; 2026 <span class="author">Joel Young</span></p>
-        <p>J Fire is free and open source under the <a href="/LICENSE">MIT License</a></p>
-        <p>Images, media and other site content are licensed under the <a href="/LICENSE-CC.txt">Creative Commons
-                Attribution-NonCommercial-ShareAlike 4.0 International</a> standard</p>
+      <!-- Hero -->
+      <section id="main-landing" aria-labelledby="hero-heading">
+        <h1 id="hero-heading">Clinical Trial Budget Tool</h1>
+        <p class="hero-lede">
+          J Fire is a free, open-source financial dashboard for clinical research.
+          Build a trial budget from scratch, track costs, and visualise a 5-year projection — all in the browser.
         </p>
-        <nav aria-label="Footer Navigation" class="bottomNav">
-            <ul>
-                <li><a href="#privacy">Privacy Policy</a></li>
-                <li><a href="#terms">Terms of Service</a></li>
-                <li><a href="#contact">Contact</a></li>
-                <li><a href="#contact">About J Fire</a></li>
-            </ul>
-        </nav>
-    </footer>
 
-    <!-- ========================================
-         ======================================== -->
-    <!-- Main application script -->
-    <script src="script.js" defer></script>
+        <div class="hero-images" aria-hidden="true">
+          <img src="Images/trippy-computer.gif"   alt="" />
+          <img src="Images/fake-tattoo.jpg"        alt="" />
+          <img src="Images/happy-spreadsheet.jpg"  alt="" />
+        </div>
 
-    <!-- ========================================
-         No-JS Fallback & Analytics
-         ======================================== -->
-    <noscript>
-        <p>This application requires JavaScript to be enabled. Please enable JavaScript in your browser settings.
+        <a href="#budget-entry" class="btn-jf-primary">Start budgeting</a>
+      </section>
+
+      <!-- ════════════════════════════════════
+           BUDGET ENTRY
+           ════════════════════════════════════ -->
+      <section id="budget-entry" aria-labelledby="budget-heading">
+        <h2 id="budget-heading" class="visually-hidden">Build a trial budget</h2>
+
+        <!-- ── 1. Project Setup ─────────────────────── -->
+        <div class="jf-section">
+          <p class="jf-section-title">01 · Project Setup</p>
+
+          <!-- Saved-project badge (shown after save) -->
+          <div id="project-badge" aria-live="polite">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+              <circle cx="6" cy="6" r="5.5" fill="#2a5c2e"/>
+              <path d="M3.5 6l1.8 1.8 3.2-3.2" stroke="#fff" stroke-width="1.2" stroke-linecap="round"/>
+            </svg>
+            <span id="project-badge-name">Project saved</span>
+          </div>
+
+          <form id="project-form" novalidate>
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="form-label" for="budget-name">Project name <span aria-hidden="true">*</span></label>
+                <input class="form-control" type="text" id="budget-name" name="budget-name"
+                       required aria-required="true" autocomplete="off" />
+              </div>
+              <div class="col-md-6">
+                <label class="form-label" for="sponsor-name">Project sponsor <span aria-hidden="true">*</span></label>
+                <input class="form-control" type="text" id="sponsor-name" name="sponsor-name"
+                       required aria-required="true" autocomplete="off" />
+              </div>
+              <div class="col-md-6">
+                <label class="form-label" for="protocol-name">Protocol number <span aria-hidden="true">*</span></label>
+                <input class="form-control" type="text" id="protocol-name" name="protocol-name"
+                       required aria-required="true" autocomplete="off" />
+              </div>
+              <div class="col-md-6">
+                <label class="form-label" for="initial-date">Date of initial contact <span aria-hidden="true">*</span></label>
+                <input class="form-control" type="date" id="initial-date" name="initial-date"
+                       required aria-required="true" />
+              </div>
+              <div class="col-12">
+                <label class="form-label" for="study-name">Full study title <span aria-hidden="true">*</span></label>
+                <input class="form-control" type="text" id="study-name" name="study-name"
+                       required aria-required="true" autocomplete="off" />
+              </div>
+              <div class="col-md-6">
+                <label class="form-label" for="disease-name">Disease <span aria-hidden="true">*</span></label>
+                <input class="form-control" type="text" id="disease-name" name="disease-name"
+                       required aria-required="true" autocomplete="off" />
+              </div>
+              <div class="col-md-6">
+                <label class="form-label" for="category-name">Disease category <span aria-hidden="true">*</span></label>
+                <input class="form-control" type="text" id="category-name" name="category-name"
+                       required aria-required="true" autocomplete="off" />
+              </div>
+            </div>
+
+            <div class="d-flex gap-3 mt-4 flex-wrap">
+              <button type="submit" class="btn-jf-primary">Save project</button>
+              <button type="button" id="load-project-btn" class="btn-jf-secondary">Load saved project</button>
+            </div>
+
+            <div id="project-status" class="jf-status" role="status" aria-live="polite"></div>
+          </form>
+        </div>
+
+        <!-- ── Budget forms (locked until project saved) ── -->
+        <div id="budget-forms-wrapper" class="budget-forms-wrapper locked">
+
+          <!-- ── 2. Finance Overview ──────────────────── -->
+          <div class="jf-section">
+            <p class="jf-section-title">02 · Finance Overview</p>
+            <form id="finance-form" novalidate>
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label class="form-label" for="enrollment-start">Enrollment start date</label>
+                  <input class="form-control" type="date" id="enrollment-start" name="enrollment-start"
+                         required aria-required="true" />
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label" for="close-out-date">Close-out date</label>
+                  <input class="form-control" type="date" id="close-out-date" name="close-out-date"
+                         required aria-required="true" />
+                </div>
+                <div class="col-md-4">
+                  <label class="form-label" for="patients-low">Patients enrolled (low)</label>
+                  <input class="form-control" type="number" id="patients-low" name="patients-low"
+                         min="0" required aria-required="true" />
+                </div>
+                <div class="col-md-4">
+                  <label class="form-label" for="patients-high">Patients enrolled (high)</label>
+                  <input class="form-control" type="number" id="patients-high" name="patients-high"
+                         min="0" required aria-required="true" />
+                </div>
+                <div class="col-md-4">
+                  <label class="form-label" for="screen-fail-rate">Screen fail rate (%)</label>
+                  <input class="form-control" type="number" id="screen-fail-rate" name="screen-fail-rate"
+                         min="0" max="100" step="0.01" required aria-required="true" />
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label" for="overhead-rate">Overhead rate (%)</label>
+                  <input class="form-control" type="number" id="overhead-rate" name="overhead-rate"
+                         min="0" step="0.01" required aria-required="true" />
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label" for="inflation-rate">Inflation rate (% per year)</label>
+                  <input class="form-control" type="number" id="inflation-rate" name="inflation-rate"
+                         step="0.01" required aria-required="true" />
+                </div>
+              </div>
+
+              <div id="finance-summary" class="jf-summary mt-4" role="region" aria-live="polite" aria-label="Finance summary">
+                <!-- Populated by JS -->
+              </div>
+            </form>
+          </div>
+
+          <!-- ── 3. Fixed Costs ───────────────────────── -->
+          <div class="jf-section">
+            <p class="jf-section-title">03 · Fixed Costs</p>
+            <form id="fixed-cost-form" novalidate>
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label class="form-label" for="initial-feasibility-review">Initial feasibility review ($)</label>
+                  <input class="form-control fixed-input" type="number" id="initial-feasibility-review"
+                         name="initial-feasibility-review" min="0" step="0.01" value="0" />
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label" for="lab-setup">Lab set-up ($)</label>
+                  <input class="form-control fixed-input" type="number" id="lab-setup"
+                         name="lab-setup" min="0" step="0.01" value="0" />
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label" for="mri-setup">MRI set-up ($)</label>
+                  <input class="form-control fixed-input" type="number" id="mri-setup"
+                         name="mri-setup" min="0" step="0.01" value="0" />
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label" for="basic-startup-cost">Basic start-up cost ($)</label>
+                  <input class="form-control fixed-input" type="number" id="basic-startup-cost"
+                         name="basic-startup-cost" min="0" step="0.01" value="0" />
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label" for="yearly-ethics-review">Yearly ethics review ($)</label>
+                  <input class="form-control fixed-input" type="number" id="yearly-ethics-review"
+                         name="yearly-ethics-review" min="0" step="0.01" value="0" />
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label" for="pharmacy-maintenance">Pharmacy maintenance ($)</label>
+                  <input class="form-control fixed-input" type="number" id="pharmacy-maintenance"
+                         name="pharmacy-maintenance" min="0" step="0.01" value="0" />
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label" for="annual-fee">Annual fee ($)</label>
+                  <input class="form-control fixed-input" type="number" id="annual-fee"
+                         name="annual-fee" min="0" step="0.01" value="0" />
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label" for="labor">Labor ($)</label>
+                  <input class="form-control fixed-input" type="number" id="labor"
+                         name="labor" min="0" step="0.01" value="0" />
+                </div>
+              </div>
+
+              <div class="jf-summary mt-4">
+                <div class="jf-grand-total">
+                  <span>Total fixed costs</span>
+                  <span id="fixed-cost-total" class="mono" aria-live="polite">$0.00</span>
+                </div>
+              </div>
+            </form>
+          </div>
+
+          <!-- ── 4. Variable Costs ────────────────────── -->
+          <div class="jf-section">
+            <p class="jf-section-title">04 · Variable Costs (per patient)</p>
+            <form id="variable-cost-form" novalidate>
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label class="form-label" for="professional-fees">Professional fees ($)</label>
+                  <input class="form-control variable-input" type="number" id="professional-fees"
+                         name="professional-fees" min="0" step="0.01" value="0" />
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label" for="mri">MRI ($)</label>
+                  <input class="form-control variable-input" type="number" id="mri"
+                         name="mri" min="0" step="0.01" value="0" />
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label" for="nursing">Nursing ($)</label>
+                  <input class="form-control variable-input" type="number" id="nursing"
+                         name="nursing" min="0" step="0.01" value="0" />
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label" for="administration">Administration ($)</label>
+                  <input class="form-control variable-input" type="number" id="administration"
+                         name="administration" min="0" step="0.01" value="0" />
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label" for="pi-fees">PI fees ($)</label>
+                  <input class="form-control variable-input" type="number" id="pi-fees"
+                         name="pi-fees" min="0" step="0.01" value="0" />
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label" for="coordinator-fees">Coordinator fees ($)</label>
+                  <input class="form-control variable-input" type="number" id="coordinator-fees"
+                         name="coordinator-fees" min="0" step="0.01" value="0" />
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label" for="supplies">Supplies ($)</label>
+                  <input class="form-control variable-input" type="number" id="supplies"
+                         name="supplies" min="0" step="0.01" value="0" />
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label" for="lab-time">Lab time ($)</label>
+                  <input class="form-control variable-input" type="number" id="lab-time"
+                         name="lab-time" min="0" step="0.01" value="0" />
+                </div>
+              </div>
+
+              <div class="jf-summary mt-4">
+                <div class="jf-grand-total">
+                  <span>Total variable costs (per patient)</span>
+                  <span id="variable-cost-total" class="mono" aria-live="polite">$0.00</span>
+                </div>
+              </div>
+            </form>
+          </div>
+
+          <!-- ── 5. Budget Overview ───────────────────── -->
+          <div class="jf-section">
+            <p class="jf-section-title">05 · Budget Overview</p>
+
+            <div class="jf-summary">
+              <dl id="budget-overview-dl">
+                <dt>Fixed costs</dt>
+                <dd id="ov-fixed">$0.00</dd>
+                <dt>Variable costs (mid-range patients)</dt>
+                <dd id="ov-variable">$0.00</dd>
+                <dt>Overhead</dt>
+                <dd id="ov-overhead">$0.00</dd>
+                <dt>Total</dt>
+                <dd id="ov-total">$0.00</dd>
+              </dl>
+            </div>
+
+            <!-- 5-year projection chart -->
+            <div id="budget-chart-container">
+              <h3>5-Year Budget Projection</h3>
+              <canvas id="budgetChart" role="img" aria-label="5-year budget projection chart"></canvas>
+            </div>
+          </div>
+
+        </div><!-- /#budget-forms-wrapper -->
+      </section>
+
+      <!-- About -->
+      <section id="about" class="jf-section" aria-labelledby="about-heading">
+        <p class="jf-section-title">About</p>
+        <h2 id="about-heading" class="h5">What is J Fire?</h2>
+        <p>
+          J Fire is a lightweight, browser-based budgeting tool designed for clinical research coordinators
+          and finance teams. It runs entirely in the browser — no server, no database, no subscription.
         </p>
-    </noscript>
+        <p>
+          Data entered is stored only in your browser's <code>localStorage</code> and is never transmitted anywhere.
+        </p>
+      </section>
 
-    <!-- Placeholder for analytics scripts -->
-    <!-- <script async src="https://analytics.example.com/script.js"></script> -->
+    </div><!-- /.jf-wrapper -->
+  </main>
+
+  <!-- ── Footer ────────────────────────────────────── -->
+  <footer role="contentinfo">
+    <div class="jf-wrapper">
+      <p>&copy; 2026 Joel Young · J Fire</p>
+      <p>Released under the <a href="/LICENSE">MIT License</a>.
+         Media licensed under <a href="/LICENSE-CC.txt">CC BY-NC-SA 4.0</a>.</p>
+      <nav class="footer-nav" aria-label="Footer navigation">
+        <a href="#privacy">Privacy</a>
+        <a href="#terms">Terms</a>
+        <a href="#about">About</a>
+      </nav>
+    </div>
+  </footer>
+
+  <!-- ── Scripts ────────────────────────────────────── -->
+  <!-- Bootstrap JS bundle (includes Popper) -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-YvpcrYf0tY3lHB60NNkmXc4s9bIOgUxi8T/jzmg5ZoB4Ot3TGxAMrXMFhNMy7T"
+          crossorigin="anonymous"></script>
+
+  <script src="script.js" defer></script>
+
+  <noscript>
+    <p style="padding:2rem; text-align:center;">
+      J Fire requires JavaScript. Please enable it in your browser settings.
+    </p>
+  </noscript>
 </body>
-
 </html>
