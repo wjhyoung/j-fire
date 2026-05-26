@@ -205,6 +205,7 @@
  * -------------------------------------------------- */
 
 .btn-jf-primary {
+  display: inline-block;
   background: var(--coral);
   color: #fff;
   border: none;
@@ -214,8 +215,9 @@
   font-weight: 500;
   letter-spacing: 0.02em;
   transition: background var(--transition), transform var(--transition);
+  text-decoration: none;
 }
-.btn-jf-primary:hover  { background: #d96535; transform: translateY(-1px); }
+.btn-jf-primary:hover  { background: #d96535; transform: translateY(-1px); color: #fff; }
 .btn-jf-primary:active { transform: none; }
 
 .btn-jf-secondary {
@@ -256,6 +258,21 @@
 }
 
 /* -------------------------------------------------- *
+   AUTO-SAVE INDICATOR (feature 2)
+   Small inline text below the project-name field.
+ * -------------------------------------------------- */
+
+.autosave-indicator {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  min-height: 1.1rem;
+  margin-top: var(--sp-1);
+  transition: color var(--transition);
+}
+.autosave-indicator.saved  { color: #2a5c2e; }
+.autosave-indicator.saving { color: var(--sky); }
+
+/* -------------------------------------------------- *
    COST TOTALS / SUMMARY CARD
  * -------------------------------------------------- */
 
@@ -277,6 +294,7 @@
 .jf-summary dt { color: var(--text-muted); }
 .jf-summary dd { text-align: right; font-weight: 500; font-family: 'DM Mono', monospace; }
 
+/* ── Grand total row — original single-column variant ── */
 .jf-grand-total {
   display: flex;
   justify-content: space-between;
@@ -287,8 +305,112 @@
   font-size: 1.1rem;
   font-weight: 600;
 }
-
 .jf-grand-total span { font-family: 'DM Mono', monospace; color: var(--coral); }
+
+/* ── Grand total row — three-column variant (cost / budget / actuals) ── */
+.jf-grand-total-grid {
+  display: grid;
+  grid-template-columns: 1fr repeat(3, minmax(80px, 120px));
+  gap: var(--sp-2) var(--sp-4);
+  align-items: baseline;
+  margin-top: var(--sp-4);
+  padding-top: var(--sp-3);
+  border-top: 1px solid var(--border);
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+.jf-grand-total-grid > span {
+  font-family: 'DM Mono', monospace;
+  color: var(--coral);
+  text-align: right;
+}
+.jf-grand-total-grid > span:first-child {
+  font-family: inherit;
+  color: var(--text);
+  text-align: left;
+}
+
+/* -------------------------------------------------- *
+   COST GRID — three-column line items (features 4 & 5)
+   Layout: [label | cost input | budget input | actuals input]
+ * -------------------------------------------------- */
+
+/* Column header row */
+.cost-grid-header {
+  display: grid;
+  grid-template-columns: 1fr repeat(3, minmax(80px, 120px));
+  gap: var(--sp-2) var(--sp-4);
+  padding: var(--sp-2) 0;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: var(--sp-3);
+}
+
+.cost-grid-header .cost-grid-col-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  text-align: right;
+}
+
+.cost-grid-header .cost-grid-item-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+}
+
+/* Data rows */
+.cost-grid-rows { display: flex; flex-direction: column; gap: var(--sp-3); }
+
+.cost-grid-row {
+  display: grid;
+  grid-template-columns: 1fr repeat(3, minmax(80px, 120px));
+  gap: var(--sp-2) var(--sp-4);
+  align-items: center;
+}
+
+/* Row label (the "line item" name) */
+.cost-grid-row .cost-grid-item-label,
+.cost-grid-row label.cost-grid-item-label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text);
+  /* Remove the default label bottom margin inside the grid */
+  margin-bottom: 0;
+}
+
+/* Inputs inside cost grid — slightly compact */
+.cost-grid-row .form-control {
+  padding: 0.4rem 0.6rem;
+  font-size: 0.85rem;
+  text-align: right;
+}
+
+/* Colour-code columns for quick visual scanning */
+.cost-grid-row .fixed-budget-input,
+.cost-grid-row .variable-budget-input {
+  border-color: rgba(54,176,235,.4);
+  background: rgba(54,176,235,.04);
+}
+.cost-grid-row .fixed-budget-input:focus,
+.cost-grid-row .variable-budget-input:focus {
+  border-color: var(--sky);
+  box-shadow: 0 0 0 3px rgba(54,176,235,.15);
+}
+
+.cost-grid-row .fixed-actual-input,
+.cost-grid-row .variable-actual-input {
+  border-color: rgba(240,125,74,.4);
+  background: rgba(240,125,74,.04);
+}
+.cost-grid-row .fixed-actual-input:focus,
+.cost-grid-row .variable-actual-input:focus {
+  border-color: var(--coral);
+  box-shadow: 0 0 0 3px rgba(240,125,74,.15);
+}
 
 /* -------------------------------------------------- *
    5-YEAR CHART CANVAS
@@ -311,6 +433,28 @@
 }
 
 #budgetChart { width: 100% !important; }
+
+/* -------------------------------------------------- *
+   BUDGET VS ACTUALS CHART (feature 5)
+ * -------------------------------------------------- */
+
+#actuals-chart-container {
+  margin-top: var(--sp-6);
+  padding: var(--sp-6);
+  background: var(--surface-alt);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+}
+
+#actuals-chart-container h3 {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  margin-bottom: var(--sp-4);
+}
+
+#actualsChart { width: 100% !important; }
 
 /* -------------------------------------------------- *
    PROJECT SAVED BADGE
@@ -361,6 +505,15 @@
 .budget-forms-wrapper.locked > * { pointer-events: none; user-select: none; opacity: .4; }
 .budget-forms-wrapper.unlocked::after { display: none; }
 .budget-forms-wrapper.unlocked > * { opacity: 1; pointer-events: auto; }
+
+/* -------------------------------------------------- *
+   AUTH-GATED APP SECTION (feature 1)
+   #budget-entry is hidden by default; JS removes "hidden"
+   once the user is authenticated.
+ * -------------------------------------------------- */
+
+.app-section { transition: opacity 280ms ease; }
+.app-section.hidden { display: none !important; }
 
 /* -------------------------------------------------- *
    FOOTER
@@ -434,6 +587,15 @@ footer p {
 @media (max-width: 768px) {
   .jf-section { padding: var(--sp-6) var(--sp-4); }
   #main-landing .hero-images img { width: 140px; height: 110px; }
+
+  /* Stack cost grid on mobile */
+  .cost-grid-header,
+  .cost-grid-row {
+    grid-template-columns: 1fr;
+  }
+  .cost-grid-header .cost-grid-col-label { display: none; } /* hide col headers; aria-labels carry context */
+  .cost-grid-row .form-control { text-align: left; }
+  .jf-grand-total-grid { grid-template-columns: 1fr 1fr; }
 }
 
 @media (max-width: 480px) {

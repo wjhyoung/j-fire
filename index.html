@@ -164,12 +164,22 @@
         <!-- Nav links -->
         <div class="collapse navbar-collapse" id="primary-nav">
           <ul class="navbar-nav ms-auto gap-1">
-            <li class="nav-item"><a class="nav-link" href="#budget-entry">Budget</a></li>
+            <!--
+              Budget link: only shown when user is authenticated (class "nav-auth-only").
+              JS adds/removes "hidden" class on login/logout.
+            -->
+            <li class="nav-item nav-auth-only hidden"><a class="nav-link" href="#budget-entry">Budget</a></li>
             <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
-            <li class="nav-item">
+            <li class="nav-item nav-auth-only hidden">
               <button id="signout-btn"
                       class="btn-jf-secondary ms-2"
                       style="font-size:.8rem; padding:.35rem 1rem;">Sign out</button>
+            </li>
+            <!-- Sign-in CTA shown when logged out -->
+            <li class="nav-item nav-guest-only">
+              <button id="nav-signin-cta"
+                      class="btn-jf-primary ms-2"
+                      style="font-size:.8rem; padding:.35rem 1rem;">Sign in</button>
             </li>
           </ul>
         </div>
@@ -196,13 +206,18 @@
           <img src="Images/happy-spreadsheet.jpg"  alt="" />
         </div>
 
-        <a href="#budget-entry" class="btn-jf-primary">Start budgeting</a>
+        <!-- CTA: shown to guests (prompts sign-in), hidden to auth users -->
+        <button id="hero-signin-cta" class="btn-jf-primary nav-guest-only">Get started — sign in</button>
+        <!-- CTA: shown to auth users only -->
+        <a href="#budget-entry" class="btn-jf-primary nav-auth-only hidden">Start budgeting</a>
       </section>
 
       <!-- ════════════════════════════════════
            BUDGET ENTRY
+           Hidden until authenticated (class "app-section").
+           JS removes "hidden" class on login.
            ════════════════════════════════════ -->
-      <section id="budget-entry" aria-labelledby="budget-heading">
+      <section id="budget-entry" class="app-section hidden" aria-labelledby="budget-heading">
         <h2 id="budget-heading" class="visually-hidden">Build a trial budget</h2>
 
         <!-- ── 1. Project Setup ─────────────────────── -->
@@ -223,7 +238,10 @@
               <div class="col-md-6">
                 <label class="form-label" for="budget-name">Project name <span aria-hidden="true">*</span></label>
                 <input class="form-control" type="text" id="budget-name" name="budget-name"
-                       required aria-required="true" autocomplete="off" />
+                       required aria-required="true" autocomplete="off"
+                       placeholder="Type a name to auto-save…" />
+                <!-- Auto-save indicator shown inline next to the field -->
+                <div id="autosave-indicator" class="autosave-indicator" aria-live="polite"></div>
               </div>
               <div class="col-md-6">
                 <label class="form-label" for="sponsor-name">Project sponsor <span aria-hidden="true">*</span></label>
@@ -318,56 +336,92 @@
           </div>
 
           <!-- ── 3. Fixed Costs ───────────────────────── -->
+          <!--
+            Feature 4 & 5: Each line item now has three columns:
+              · Cost     — the estimated cost (original field, renamed label)
+              · Budget   — the allocated budget amount
+              · Actuals  — what was actually spent
+            The column headers are rendered above the first row via a sticky header row.
+          -->
           <div class="jf-section">
             <p class="jf-section-title">03 · Fixed Costs</p>
             <form id="fixed-cost-form" novalidate>
-              <div class="row g-3">
-                <div class="col-md-6">
-                  <label class="form-label" for="initial-feasibility-review">Initial feasibility review ($)</label>
-                  <input class="form-control fixed-input" type="number" id="initial-feasibility-review"
-                         name="initial-feasibility-review" min="0" step="0.01" value="0" />
-                </div>
-                <div class="col-md-6">
-                  <label class="form-label" for="lab-setup">Lab set-up ($)</label>
-                  <input class="form-control fixed-input" type="number" id="lab-setup"
-                         name="lab-setup" min="0" step="0.01" value="0" />
-                </div>
-                <div class="col-md-6">
-                  <label class="form-label" for="mri-setup">MRI set-up ($)</label>
-                  <input class="form-control fixed-input" type="number" id="mri-setup"
-                         name="mri-setup" min="0" step="0.01" value="0" />
-                </div>
-                <div class="col-md-6">
-                  <label class="form-label" for="basic-startup-cost">Basic start-up cost ($)</label>
-                  <input class="form-control fixed-input" type="number" id="basic-startup-cost"
-                         name="basic-startup-cost" min="0" step="0.01" value="0" />
-                </div>
-                <div class="col-md-6">
-                  <label class="form-label" for="yearly-ethics-review">Yearly ethics review ($)</label>
-                  <input class="form-control fixed-input" type="number" id="yearly-ethics-review"
-                         name="yearly-ethics-review" min="0" step="0.01" value="0" />
-                </div>
-                <div class="col-md-6">
-                  <label class="form-label" for="pharmacy-maintenance">Pharmacy maintenance ($)</label>
-                  <input class="form-control fixed-input" type="number" id="pharmacy-maintenance"
-                         name="pharmacy-maintenance" min="0" step="0.01" value="0" />
-                </div>
-                <div class="col-md-6">
-                  <label class="form-label" for="annual-fee">Annual fee ($)</label>
-                  <input class="form-control fixed-input" type="number" id="annual-fee"
-                         name="annual-fee" min="0" step="0.01" value="0" />
-                </div>
-                <div class="col-md-6">
-                  <label class="form-label" for="labor">Labor ($)</label>
-                  <input class="form-control fixed-input" type="number" id="labor"
-                         name="labor" min="0" step="0.01" value="0" />
-                </div>
+
+              <!-- Column header row -->
+              <div class="cost-grid-header">
+                <span class="cost-grid-item-label">Line item</span>
+                <span class="cost-grid-col-label">Cost ($)</span>
+                <span class="cost-grid-col-label">Budget ($)</span>
+                <span class="cost-grid-col-label">Actuals ($)</span>
               </div>
 
+              <!-- Line items -->
+              <div class="cost-grid-rows">
+
+                <div class="cost-grid-row">
+                  <label class="cost-grid-item-label" for="initial-feasibility-review-cost">Initial feasibility review</label>
+                  <input class="form-control fixed-cost-input"  type="number" id="initial-feasibility-review-cost"   name="initial-feasibility-review-cost"   min="0" step="0.01" value="0" aria-label="Initial feasibility review — cost" />
+                  <input class="form-control fixed-budget-input" type="number" id="initial-feasibility-review-budget" name="initial-feasibility-review-budget" min="0" step="0.01" value="0" aria-label="Initial feasibility review — budget" />
+                  <input class="form-control fixed-actual-input" type="number" id="initial-feasibility-review-actual" name="initial-feasibility-review-actual" min="0" step="0.01" value="0" aria-label="Initial feasibility review — actuals" />
+                </div>
+
+                <div class="cost-grid-row">
+                  <label class="cost-grid-item-label" for="lab-setup-cost">Lab set-up</label>
+                  <input class="form-control fixed-cost-input"  type="number" id="lab-setup-cost"   name="lab-setup-cost"   min="0" step="0.01" value="0" aria-label="Lab set-up — cost" />
+                  <input class="form-control fixed-budget-input" type="number" id="lab-setup-budget" name="lab-setup-budget" min="0" step="0.01" value="0" aria-label="Lab set-up — budget" />
+                  <input class="form-control fixed-actual-input" type="number" id="lab-setup-actual" name="lab-setup-actual" min="0" step="0.01" value="0" aria-label="Lab set-up — actuals" />
+                </div>
+
+                <div class="cost-grid-row">
+                  <label class="cost-grid-item-label" for="mri-setup-cost">MRI set-up</label>
+                  <input class="form-control fixed-cost-input"  type="number" id="mri-setup-cost"   name="mri-setup-cost"   min="0" step="0.01" value="0" aria-label="MRI set-up — cost" />
+                  <input class="form-control fixed-budget-input" type="number" id="mri-setup-budget" name="mri-setup-budget" min="0" step="0.01" value="0" aria-label="MRI set-up — budget" />
+                  <input class="form-control fixed-actual-input" type="number" id="mri-setup-actual" name="mri-setup-actual" min="0" step="0.01" value="0" aria-label="MRI set-up — actuals" />
+                </div>
+
+                <div class="cost-grid-row">
+                  <label class="cost-grid-item-label" for="basic-startup-cost-cost">Basic start-up cost</label>
+                  <input class="form-control fixed-cost-input"  type="number" id="basic-startup-cost-cost"   name="basic-startup-cost-cost"   min="0" step="0.01" value="0" aria-label="Basic start-up cost — cost" />
+                  <input class="form-control fixed-budget-input" type="number" id="basic-startup-cost-budget" name="basic-startup-cost-budget" min="0" step="0.01" value="0" aria-label="Basic start-up cost — budget" />
+                  <input class="form-control fixed-actual-input" type="number" id="basic-startup-cost-actual" name="basic-startup-cost-actual" min="0" step="0.01" value="0" aria-label="Basic start-up cost — actuals" />
+                </div>
+
+                <div class="cost-grid-row">
+                  <label class="cost-grid-item-label" for="yearly-ethics-review-cost">Yearly ethics review</label>
+                  <input class="form-control fixed-cost-input"  type="number" id="yearly-ethics-review-cost"   name="yearly-ethics-review-cost"   min="0" step="0.01" value="0" aria-label="Yearly ethics review — cost" />
+                  <input class="form-control fixed-budget-input" type="number" id="yearly-ethics-review-budget" name="yearly-ethics-review-budget" min="0" step="0.01" value="0" aria-label="Yearly ethics review — budget" />
+                  <input class="form-control fixed-actual-input" type="number" id="yearly-ethics-review-actual" name="yearly-ethics-review-actual" min="0" step="0.01" value="0" aria-label="Yearly ethics review — actuals" />
+                </div>
+
+                <div class="cost-grid-row">
+                  <label class="cost-grid-item-label" for="pharmacy-maintenance-cost">Pharmacy maintenance</label>
+                  <input class="form-control fixed-cost-input"  type="number" id="pharmacy-maintenance-cost"   name="pharmacy-maintenance-cost"   min="0" step="0.01" value="0" aria-label="Pharmacy maintenance — cost" />
+                  <input class="form-control fixed-budget-input" type="number" id="pharmacy-maintenance-budget" name="pharmacy-maintenance-budget" min="0" step="0.01" value="0" aria-label="Pharmacy maintenance — budget" />
+                  <input class="form-control fixed-actual-input" type="number" id="pharmacy-maintenance-actual" name="pharmacy-maintenance-actual" min="0" step="0.01" value="0" aria-label="Pharmacy maintenance — actuals" />
+                </div>
+
+                <div class="cost-grid-row">
+                  <label class="cost-grid-item-label" for="annual-fee-cost">Annual fee</label>
+                  <input class="form-control fixed-cost-input"  type="number" id="annual-fee-cost"   name="annual-fee-cost"   min="0" step="0.01" value="0" aria-label="Annual fee — cost" />
+                  <input class="form-control fixed-budget-input" type="number" id="annual-fee-budget" name="annual-fee-budget" min="0" step="0.01" value="0" aria-label="Annual fee — budget" />
+                  <input class="form-control fixed-actual-input" type="number" id="annual-fee-actual" name="annual-fee-actual" min="0" step="0.01" value="0" aria-label="Annual fee — actuals" />
+                </div>
+
+                <div class="cost-grid-row">
+                  <label class="cost-grid-item-label" for="labor-cost">Labor</label>
+                  <input class="form-control fixed-cost-input"  type="number" id="labor-cost"   name="labor-cost"   min="0" step="0.01" value="0" aria-label="Labor — cost" />
+                  <input class="form-control fixed-budget-input" type="number" id="labor-budget" name="labor-budget" min="0" step="0.01" value="0" aria-label="Labor — budget" />
+                  <input class="form-control fixed-actual-input" type="number" id="labor-actual" name="labor-actual" min="0" step="0.01" value="0" aria-label="Labor — actuals" />
+                </div>
+
+              </div><!-- /.cost-grid-rows -->
+
               <div class="jf-summary mt-4">
-                <div class="jf-grand-total">
+                <div class="jf-grand-total-grid">
                   <span>Total fixed costs</span>
-                  <span id="fixed-cost-total" class="mono" aria-live="polite">$0.00</span>
+                  <span id="fixed-cost-total"   class="mono" aria-live="polite">$0.00</span>
+                  <span id="fixed-budget-total" class="mono" aria-live="polite">$0.00</span>
+                  <span id="fixed-actual-total" class="mono" aria-live="polite">$0.00</span>
                 </div>
               </div>
             </form>
@@ -377,53 +431,82 @@
           <div class="jf-section">
             <p class="jf-section-title">04 · Variable Costs (per patient)</p>
             <form id="variable-cost-form" novalidate>
-              <div class="row g-3">
-                <div class="col-md-6">
-                  <label class="form-label" for="professional-fees">Professional fees ($)</label>
-                  <input class="form-control variable-input" type="number" id="professional-fees"
-                         name="professional-fees" min="0" step="0.01" value="0" />
-                </div>
-                <div class="col-md-6">
-                  <label class="form-label" for="mri">MRI ($)</label>
-                  <input class="form-control variable-input" type="number" id="mri"
-                         name="mri" min="0" step="0.01" value="0" />
-                </div>
-                <div class="col-md-6">
-                  <label class="form-label" for="nursing">Nursing ($)</label>
-                  <input class="form-control variable-input" type="number" id="nursing"
-                         name="nursing" min="0" step="0.01" value="0" />
-                </div>
-                <div class="col-md-6">
-                  <label class="form-label" for="administration">Administration ($)</label>
-                  <input class="form-control variable-input" type="number" id="administration"
-                         name="administration" min="0" step="0.01" value="0" />
-                </div>
-                <div class="col-md-6">
-                  <label class="form-label" for="pi-fees">PI fees ($)</label>
-                  <input class="form-control variable-input" type="number" id="pi-fees"
-                         name="pi-fees" min="0" step="0.01" value="0" />
-                </div>
-                <div class="col-md-6">
-                  <label class="form-label" for="coordinator-fees">Coordinator fees ($)</label>
-                  <input class="form-control variable-input" type="number" id="coordinator-fees"
-                         name="coordinator-fees" min="0" step="0.01" value="0" />
-                </div>
-                <div class="col-md-6">
-                  <label class="form-label" for="supplies">Supplies ($)</label>
-                  <input class="form-control variable-input" type="number" id="supplies"
-                         name="supplies" min="0" step="0.01" value="0" />
-                </div>
-                <div class="col-md-6">
-                  <label class="form-label" for="lab-time">Lab time ($)</label>
-                  <input class="form-control variable-input" type="number" id="lab-time"
-                         name="lab-time" min="0" step="0.01" value="0" />
-                </div>
+
+              <!-- Column header row -->
+              <div class="cost-grid-header">
+                <span class="cost-grid-item-label">Line item</span>
+                <span class="cost-grid-col-label">Cost ($)</span>
+                <span class="cost-grid-col-label">Budget ($)</span>
+                <span class="cost-grid-col-label">Actuals ($)</span>
               </div>
 
+              <!-- Line items -->
+              <div class="cost-grid-rows">
+
+                <div class="cost-grid-row">
+                  <label class="cost-grid-item-label" for="professional-fees-cost">Professional fees</label>
+                  <input class="form-control variable-cost-input"  type="number" id="professional-fees-cost"   name="professional-fees-cost"   min="0" step="0.01" value="0" aria-label="Professional fees — cost" />
+                  <input class="form-control variable-budget-input" type="number" id="professional-fees-budget" name="professional-fees-budget" min="0" step="0.01" value="0" aria-label="Professional fees — budget" />
+                  <input class="form-control variable-actual-input" type="number" id="professional-fees-actual" name="professional-fees-actual" min="0" step="0.01" value="0" aria-label="Professional fees — actuals" />
+                </div>
+
+                <div class="cost-grid-row">
+                  <label class="cost-grid-item-label" for="mri-cost">MRI</label>
+                  <input class="form-control variable-cost-input"  type="number" id="mri-cost"   name="mri-cost"   min="0" step="0.01" value="0" aria-label="MRI — cost" />
+                  <input class="form-control variable-budget-input" type="number" id="mri-budget" name="mri-budget" min="0" step="0.01" value="0" aria-label="MRI — budget" />
+                  <input class="form-control variable-actual-input" type="number" id="mri-actual" name="mri-actual" min="0" step="0.01" value="0" aria-label="MRI — actuals" />
+                </div>
+
+                <div class="cost-grid-row">
+                  <label class="cost-grid-item-label" for="nursing-cost">Nursing</label>
+                  <input class="form-control variable-cost-input"  type="number" id="nursing-cost"   name="nursing-cost"   min="0" step="0.01" value="0" aria-label="Nursing — cost" />
+                  <input class="form-control variable-budget-input" type="number" id="nursing-budget" name="nursing-budget" min="0" step="0.01" value="0" aria-label="Nursing — budget" />
+                  <input class="form-control variable-actual-input" type="number" id="nursing-actual" name="nursing-actual" min="0" step="0.01" value="0" aria-label="Nursing — actuals" />
+                </div>
+
+                <div class="cost-grid-row">
+                  <label class="cost-grid-item-label" for="administration-cost">Administration</label>
+                  <input class="form-control variable-cost-input"  type="number" id="administration-cost"   name="administration-cost"   min="0" step="0.01" value="0" aria-label="Administration — cost" />
+                  <input class="form-control variable-budget-input" type="number" id="administration-budget" name="administration-budget" min="0" step="0.01" value="0" aria-label="Administration — budget" />
+                  <input class="form-control variable-actual-input" type="number" id="administration-actual" name="administration-actual" min="0" step="0.01" value="0" aria-label="Administration — actuals" />
+                </div>
+
+                <div class="cost-grid-row">
+                  <label class="cost-grid-item-label" for="pi-fees-cost">PI fees</label>
+                  <input class="form-control variable-cost-input"  type="number" id="pi-fees-cost"   name="pi-fees-cost"   min="0" step="0.01" value="0" aria-label="PI fees — cost" />
+                  <input class="form-control variable-budget-input" type="number" id="pi-fees-budget" name="pi-fees-budget" min="0" step="0.01" value="0" aria-label="PI fees — budget" />
+                  <input class="form-control variable-actual-input" type="number" id="pi-fees-actual" name="pi-fees-actual" min="0" step="0.01" value="0" aria-label="PI fees — actuals" />
+                </div>
+
+                <div class="cost-grid-row">
+                  <label class="cost-grid-item-label" for="coordinator-fees-cost">Coordinator fees</label>
+                  <input class="form-control variable-cost-input"  type="number" id="coordinator-fees-cost"   name="coordinator-fees-cost"   min="0" step="0.01" value="0" aria-label="Coordinator fees — cost" />
+                  <input class="form-control variable-budget-input" type="number" id="coordinator-fees-budget" name="coordinator-fees-budget" min="0" step="0.01" value="0" aria-label="Coordinator fees — budget" />
+                  <input class="form-control variable-actual-input" type="number" id="coordinator-fees-actual" name="coordinator-fees-actual" min="0" step="0.01" value="0" aria-label="Coordinator fees — actuals" />
+                </div>
+
+                <div class="cost-grid-row">
+                  <label class="cost-grid-item-label" for="supplies-cost">Supplies</label>
+                  <input class="form-control variable-cost-input"  type="number" id="supplies-cost"   name="supplies-cost"   min="0" step="0.01" value="0" aria-label="Supplies — cost" />
+                  <input class="form-control variable-budget-input" type="number" id="supplies-budget" name="supplies-budget" min="0" step="0.01" value="0" aria-label="Supplies — budget" />
+                  <input class="form-control variable-actual-input" type="number" id="supplies-actual" name="supplies-actual" min="0" step="0.01" value="0" aria-label="Supplies — actuals" />
+                </div>
+
+                <div class="cost-grid-row">
+                  <label class="cost-grid-item-label" for="lab-time-cost">Lab time</label>
+                  <input class="form-control variable-cost-input"  type="number" id="lab-time-cost"   name="lab-time-cost"   min="0" step="0.01" value="0" aria-label="Lab time — cost" />
+                  <input class="form-control variable-budget-input" type="number" id="lab-time-budget" name="lab-time-budget" min="0" step="0.01" value="0" aria-label="Lab time — budget" />
+                  <input class="form-control variable-actual-input" type="number" id="lab-time-actual" name="lab-time-actual" min="0" step="0.01" value="0" aria-label="Lab time — actuals" />
+                </div>
+
+              </div><!-- /.cost-grid-rows -->
+
               <div class="jf-summary mt-4">
-                <div class="jf-grand-total">
+                <div class="jf-grand-total-grid">
                   <span>Total variable costs (per patient)</span>
-                  <span id="variable-cost-total" class="mono" aria-live="polite">$0.00</span>
+                  <span id="variable-cost-total"   class="mono" aria-live="polite">$0.00</span>
+                  <span id="variable-budget-total" class="mono" aria-live="polite">$0.00</span>
+                  <span id="variable-actual-total" class="mono" aria-live="polite">$0.00</span>
                 </div>
               </div>
             </form>
@@ -441,22 +524,30 @@
                 <dd id="ov-variable">$0.00</dd>
                 <dt>Overhead</dt>
                 <dd id="ov-overhead">$0.00</dd>
-                <dt>Total</dt>
+                <dt>Total (budget)</dt>
                 <dd id="ov-total">$0.00</dd>
+                <dt>Total (actuals)</dt>
+                <dd id="ov-actuals-total">$0.00</dd>
               </dl>
             </div>
 
-            <!-- 5-year projection chart -->
+            <!-- 5-year projection chart — budget vs actuals -->
             <div id="budget-chart-container">
               <h3>5-Year Budget Projection</h3>
-              <canvas id="budgetChart" role="img" aria-label="5-year budget projection chart"></canvas>
+              <canvas id="budgetChart" role="img" aria-label="5-year budget projection chart comparing budget and actuals"></canvas>
+            </div>
+
+            <!-- Budget vs Actuals comparison chart -->
+            <div id="actuals-chart-container">
+              <h3>Budget vs. Actuals — Current Year</h3>
+              <canvas id="actualsChart" role="img" aria-label="Budget vs actuals comparison chart"></canvas>
             </div>
           </div>
 
         </div><!-- /#budget-forms-wrapper -->
       </section>
 
-      <!-- About -->
+      <!-- About — always visible (feature 1) -->
       <section id="about" class="jf-section" aria-labelledby="about-heading">
         <p class="jf-section-title">About</p>
         <h2 id="about-heading" class="h5">What is J Fire?</h2>
@@ -466,6 +557,7 @@
         </p>
         <p>
           Data entered is stored only in your browser's <code>localStorage</code> and is never transmitted anywhere.
+          Sign up or sign in above to access the full budgeting features.
         </p>
       </section>
 

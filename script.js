@@ -3,12 +3,17 @@
  * ─────────────────────────────────────────────────────────────
  * Responsibilities:
  *  1. Auth overlay (sign-up / sign-in via localStorage user store)
+ *     + Feature 1: budget section hidden until authenticated;
+ *       hero & about always visible
  *  2. Project form — save & load via localStorage
+ *     + Feature 2: auto-save as soon as the project title is typed
  *  3. Finance overview — live validation + summary display
- *  4. Fixed cost form — live running total
- *  5. Variable cost form — live running total
+ *  4. Fixed cost form — live running total (cost | budget | actuals)
+ *  5. Variable cost form — live running total (cost | budget | actuals)
  *  6. Budget overview — combined totals with overhead applied
- *  7. 5-year chart — live update via Chart.js
+ *  7. 5-year chart — live update via Chart.js (feature 3)
+ *     + Feature 3: chart auto-updates on every input change
+ *  8. Budget vs Actuals chart — feature 5
  * ─────────────────────────────────────────────────────────────
  */
 
@@ -60,6 +65,18 @@ function sumInputs(selector) {
     .reduce((sum, input) => sum + (parseFloat(input.value) || 0), 0);
 }
 
+/**
+ * Simple debounce — returns a function that delays invoking fn
+ * until after `wait` ms have elapsed since the last invocation.
+ */
+function debounce(fn, wait) {
+  let timer;
+  return (...args) => {
+    clearTimeout(timer);
+    timer = setTimeout(() => fn(...args), wait);
+  };
+}
+
 /* ═══════════════════════════════════════════════════════════
    USER STORE (localStorage)
    A simple client-side user store for portfolio demonstration.
@@ -91,6 +108,31 @@ function clearSession() {
 }
 
 /* ═══════════════════════════════════════════════════════════
+   FEATURE 1 — AUTH-GATED UI
+   Show hero + about to everyone.
+   Reveal #budget-entry and auth-only nav items only when
+   a valid session exists.
+   ═══════════════════════════════════════════════════════════ */
+
+/**
+ * Update the page's auth-gated elements based on current session.
+ * Called after every login / logout.
+ */
+function applyAuthState() {
+  const isLoggedIn = Boolean(getSession());
+
+  // Budget entry section
+  const budgetSection = document.getElementById('budget-entry');
+  budgetSection?.classList.toggle('hidden', !isLoggedIn);
+
+  // Nav items: show/hide auth-only vs guest-only items
+  document.querySelectorAll('.nav-auth-only').forEach(el => el.classList.toggle('hidden', !isLoggedIn));
+  document.querySelectorAll('.nav-guest-only').forEach(el => el.classList.toggle('hidden', isLoggedIn));
+
+  // Hero CTA anchor text swap is handled by the class toggles above
+}
+
+/* ═══════════════════════════════════════════════════════════
    AUTH OVERLAY
    ═══════════════════════════════════════════════════════════ */
 
@@ -107,6 +149,10 @@ function initAuth() {
   const tabSignin     = document.getElementById('tab-signin');
   const tabSignup     = document.getElementById('tab-signup');
 
+  // Nav sign-in CTAs (hero + navbar) that open the overlay
+  const navSigninCta  = document.getElementById('nav-signin-cta');
+  const heroSigninCta = document.getElementById('hero-signin-cta');
+
   function switchTab(tab) {
     const isSignin = tab === 'signin';
     tabSigninBtn.classList.toggle('active', isSignin);
@@ -121,15 +167,24 @@ function initAuth() {
   tabSigninBtn.addEventListener('click', () => switchTab('signin'));
   tabSignupBtn.addEventListener('click', () => switchTab('signup'));
 
-  // Show or hide overlay based on session
+  /** Open the auth overlay (e.g. when a guest clicks "Sign in"). */
+  function openOverlay() {
+    overlay?.classList.remove('hidden');
+    setTimeout(() => document.getElementById('signin-username')?.focus(), 50);
+  }
+
+  navSigninCta?.addEventListener('click', openOverlay);
+  heroSigninCta?.addEventListener('click', openOverlay);
+
+  /** Show or hide overlay + apply UI state based on session. */
   function checkSession() {
     if (getSession()) {
       overlay.classList.add('hidden');
     } else {
       overlay.classList.remove('hidden');
-      // Focus first focusable field for accessibility
       setTimeout(() => document.getElementById('signin-username')?.focus(), 50);
     }
+    applyAuthState();
   }
 
   // Sign-up handler
@@ -180,6 +235,11 @@ function initAuth() {
   // Sign-out handler
   signoutBtn?.addEventListener('click', () => {
     clearSession();
+    // Lock the budget forms again visually
+    const wrapper = document.getElementById('budget-forms-wrapper');
+    wrapper?.classList.remove('unlocked');
+    wrapper?.classList.add('locked');
+    document.getElementById('project-badge')?.classList.remove('visible');
     checkSession();
   });
 
@@ -202,6 +262,7 @@ function initAuth() {
 
 /* ═══════════════════════════════════════════════════════════
    PROJECT FORM — Save & Load
+   + Feature 2: auto-save on project-name input (debounced)
    ═══════════════════════════════════════════════════════════ */
 
 /** Fields that belong to the project setup form. */
@@ -217,6 +278,8 @@ function initProjectForm() {
   const badge          = document.getElementById('project-badge');
   const badgeName      = document.getElementById('project-badge-name');
   const formsWrapper   = document.getElementById('budget-forms-wrapper');
+  const budgetNameEl   = document.getElementById('budget-name');
+  const autoSaveInd    = document.getElementById('autosave-indicator');
 
   /** Unlock the budget forms section. */
   function unlockForms(projectName) {
@@ -224,6 +287,18 @@ function initProjectForm() {
     formsWrapper?.classList.add('unlocked');
     if (badge)     badge.classList.add('visible');
     if (badgeName) badgeName.textContent = `Saved: ${projectName}`;
+  }
+
+  /** Persist the project object to localStorage. */
+  function persistProject(projectName) {
+    const project = {};
+    PROJECT_FIELDS.forEach(id => {
+      const key = id.replace(/-([a-z])/g, (_, c) => c.toUpperCase());
+      project[key] = document.getElementById(id)?.value.trim() ?? '';
+    });
+    project.savedAt = new Date().toISOString();
+    localStorage.setItem(STORAGE_KEYS.PROJECT, JSON.stringify(project));
+    return project;
   }
 
   /** Check on page load whether a project was already saved. */
@@ -234,12 +309,40 @@ function initProjectForm() {
     } catch { /* no saved project */ }
   }
 
-  // Save project
+  /* ── Feature 2: Auto-save when project name is entered ─── */
+  const autoSave = debounce(() => {
+    const name = budgetNameEl?.value.trim();
+    if (!name) return; // do nothing if field is empty
+
+    if (autoSaveInd) {
+      autoSaveInd.textContent = 'Saving…';
+      autoSaveInd.className   = 'autosave-indicator saving';
+    }
+
+    persistProject(name);
+    unlockForms(name);
+    hideStatus(statusEl);
+
+    if (autoSaveInd) {
+      autoSaveInd.textContent = '✓ Project auto-saved';
+      autoSaveInd.className   = 'autosave-indicator saved';
+      // Fade the message out after a moment
+      setTimeout(() => {
+        if (autoSaveInd.classList.contains('saved')) {
+          autoSaveInd.textContent = '';
+          autoSaveInd.className   = 'autosave-indicator';
+        }
+      }, 3000);
+    }
+  }, 600);
+
+  budgetNameEl?.addEventListener('input', autoSave);
+
+  // Manual save (full form validation)
   form?.addEventListener('submit', (e) => {
     e.preventDefault();
     hideStatus(statusEl);
 
-    // Validate all fields
     const missing = PROJECT_FIELDS.filter(id => !document.getElementById(id)?.value.trim());
     if (missing.length) {
       showStatus(statusEl, 'Please fill in all required fields.', true);
@@ -247,16 +350,12 @@ function initProjectForm() {
       return;
     }
 
-    const project = {};
-    PROJECT_FIELDS.forEach(id => {
-      project[id.replace(/-([a-z])/g, (_, c) => c.toUpperCase())] =
-        document.getElementById(id).value.trim();
-    });
-    project.savedAt = new Date().toISOString();
-
-    localStorage.setItem(STORAGE_KEYS.PROJECT, JSON.stringify(project));
+    const project = persistProject(document.getElementById('budget-name').value.trim());
     showStatus(statusEl, `Project "${project.budgetName}" saved successfully.`);
     unlockForms(project.budgetName);
+
+    // Clear auto-save indicator since user just manually saved
+    if (autoSaveInd) { autoSaveInd.textContent = ''; autoSaveInd.className = 'autosave-indicator'; }
   });
 
   // Load project
@@ -338,83 +437,123 @@ function initFinanceForm() {
 }
 
 /* ═══════════════════════════════════════════════════════════
-   FIXED COST FORM — live total
+   FIXED COST FORM — live totals for cost | budget | actuals
    ═══════════════════════════════════════════════════════════ */
 
 function initFixedCostForm() {
-  const form    = document.getElementById('fixed-cost-form');
-  const display = document.getElementById('fixed-cost-total');
+  const form = document.getElementById('fixed-cost-form');
 
   function update() {
-    const total = sumInputs('.fixed-input');
-    if (display) display.textContent = formatUSD(total);
+    const costTotal   = sumInputs('.fixed-cost-input');
+    const budgetTotal = sumInputs('.fixed-budget-input');
+    const actualTotal = sumInputs('.fixed-actual-input');
+
+    const set = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = formatUSD(val); };
+    set('fixed-cost-total',   costTotal);
+    set('fixed-budget-total', budgetTotal);
+    set('fixed-actual-total', actualTotal);
+
     updateBudgetOverview();
   }
 
-  form?.querySelectorAll('.fixed-input').forEach(el => el.addEventListener('input', update));
+  // Listen on all three column-types
+  form?.querySelectorAll('.fixed-cost-input, .fixed-budget-input, .fixed-actual-input')
+       .forEach(el => el.addEventListener('input', update));
   form?.addEventListener('submit', (e) => e.preventDefault());
 }
 
 /* ═══════════════════════════════════════════════════════════
-   VARIABLE COST FORM — live total
+   VARIABLE COST FORM — live totals for cost | budget | actuals
    ═══════════════════════════════════════════════════════════ */
 
 function initVariableCostForm() {
-  const form    = document.getElementById('variable-cost-form');
-  const display = document.getElementById('variable-cost-total');
+  const form = document.getElementById('variable-cost-form');
 
   function update() {
-    const total = sumInputs('.variable-input');
-    if (display) display.textContent = formatUSD(total);
+    const costTotal   = sumInputs('.variable-cost-input');
+    const budgetTotal = sumInputs('.variable-budget-input');
+    const actualTotal = sumInputs('.variable-actual-input');
+
+    const set = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = formatUSD(val); };
+    set('variable-cost-total',   costTotal);
+    set('variable-budget-total', budgetTotal);
+    set('variable-actual-total', actualTotal);
+
     updateBudgetOverview();
   }
 
-  form?.querySelectorAll('.variable-input').forEach(el => el.addEventListener('input', update));
+  form?.querySelectorAll('.variable-cost-input, .variable-budget-input, .variable-actual-input')
+       .forEach(el => el.addEventListener('input', update));
   form?.addEventListener('submit', (e) => e.preventDefault());
 }
 
 /* ═══════════════════════════════════════════════════════════
    BUDGET OVERVIEW — combined totals
+   Called by every form that can change the bottom-line numbers.
    ═══════════════════════════════════════════════════════════ */
 
 function updateBudgetOverview() {
-  const fixedTotal    = sumInputs('.fixed-input');
-  const variablePerPt = sumInputs('.variable-input');
-  const overhead      = parseFloat(document.getElementById('overhead-rate')?.value) || 0;
-  const patientsLow   = parseInt(document.getElementById('patients-low')?.value)  || 0;
-  const patientsHigh  = parseInt(document.getElementById('patients-high')?.value) || 0;
-  const sfRate        = parseFloat(document.getElementById('screen-fail-rate')?.value) || 0;
+  // ── Cost column (original "estimate") ──
+  const fixedCostTotal    = sumInputs('.fixed-cost-input');
+  const variableCostPerPt = sumInputs('.variable-cost-input');
 
-  const midPatients   = Math.round(((patientsLow + patientsHigh) / 2) * (1 - sfRate / 100));
-  const variableTotal = variablePerPt * midPatients;
-  const subtotal      = fixedTotal + variableTotal;
-  const overheadAmt   = subtotal * (overhead / 100);
-  const grandTotal    = subtotal + overheadAmt;
+  // ── Budget column ──
+  const fixedBudgetTotal    = sumInputs('.fixed-budget-input');
+  const variableBudgetPerPt = sumInputs('.variable-budget-input');
 
-  // Update text elements
+  // ── Actuals column ──
+  const fixedActualTotal    = sumInputs('.fixed-actual-input');
+  const variableActualPerPt = sumInputs('.variable-actual-input');
+
+  const overhead    = parseFloat(document.getElementById('overhead-rate')?.value) || 0;
+  const patientsLow  = parseInt(document.getElementById('patients-low')?.value)   || 0;
+  const patientsHigh = parseInt(document.getElementById('patients-high')?.value)  || 0;
+  const sfRate      = parseFloat(document.getElementById('screen-fail-rate')?.value) || 0;
+
+  const midPatients = Math.round(((patientsLow + patientsHigh) / 2) * (1 - sfRate / 100));
+
+  // Totals using the Budget column for the overview and projection
+  const variableBudgetTotal = variableBudgetPerPt * midPatients;
+  const fixedForOverview    = fixedBudgetTotal  || fixedCostTotal;   // fall back to cost if budget not entered
+  const varForOverview      = variableBudgetTotal || (variableCostPerPt * midPatients);
+  const subtotal            = fixedForOverview + varForOverview;
+  const overheadAmt         = subtotal * (overhead / 100);
+  const grandTotal          = subtotal + overheadAmt;
+
+  // Actuals grand total (no overhead applied — actuals are real spend)
+  const variableActualTotal = variableActualPerPt * midPatients;
+  const actualsGrand        = fixedActualTotal + variableActualTotal;
+
+  // ── Update text elements ──
   const set = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = formatUSD(val); };
-  set('ov-fixed',    fixedTotal);
-  set('ov-variable', variableTotal);
-  set('ov-overhead', overheadAmt);
-  set('ov-total',    grandTotal);
+  set('ov-fixed',         fixedForOverview);
+  set('ov-variable',      varForOverview);
+  set('ov-overhead',      overheadAmt);
+  set('ov-total',         grandTotal);
+  set('ov-actuals-total', actualsGrand);
 
-  updateChart(grandTotal, overhead);
+  // ── Update charts ──
+  const inflation = parseFloat(document.getElementById('inflation-rate')?.value) || 0;
+  updateProjectionChart(grandTotal, inflation);
+  updateActualsChart(grandTotal, actualsGrand);
 }
 
 /* ═══════════════════════════════════════════════════════════
-   5-YEAR BUDGET CHART (Chart.js)
+   FEATURE 3 — 5-YEAR BUDGET PROJECTION CHART (Chart.js)
+   Auto-updates on every input change via updateBudgetOverview.
    ═══════════════════════════════════════════════════════════ */
 
 let budgetChartInstance = null;
 
-function buildChartData(baseTotal, inflation) {
+/** Build year-by-year totals with compound inflation. */
+function buildProjectionData(baseTotal, inflation) {
   const years  = ['Year 1', 'Year 2', 'Year 3', 'Year 4', 'Year 5'];
   const rate   = 1 + (parseFloat(inflation) || 0) / 100;
   const totals = years.map((_, i) => +(baseTotal * Math.pow(rate, i)).toFixed(2));
   return { years, totals };
 }
 
-function initChart() {
+function initProjectionChart() {
   const canvas = document.getElementById('budgetChart');
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
@@ -464,25 +603,104 @@ function initChart() {
   });
 }
 
-function updateChart(baseTotal, inflation) {
+/** Feature 3 — update projection chart whenever inputs change. */
+function updateProjectionChart(baseTotal, inflation) {
   if (!budgetChartInstance) return;
-  const { totals } = buildChartData(baseTotal, inflation);
+  const { totals } = buildProjectionData(baseTotal, inflation);
   budgetChartInstance.data.datasets[0].data = totals;
   budgetChartInstance.update();
 }
 
 /* ═══════════════════════════════════════════════════════════
-   SIGN-OUT — wipe budget forms (but keep user store)
+   FEATURE 5 — BUDGET VS ACTUALS CHART (Chart.js)
+   Compares the current-year budget total with actuals.
    ═══════════════════════════════════════════════════════════ */
 
-function initSignout() {
-  document.getElementById('signout-btn')?.addEventListener('click', () => {
-    // Lock the budget forms again visually
-    const wrapper = document.getElementById('budget-forms-wrapper');
-    wrapper?.classList.remove('unlocked');
-    wrapper?.classList.add('locked');
-    document.getElementById('project-badge')?.classList.remove('visible');
+let actualsChartInstance = null;
+
+function initActualsChart() {
+  const canvas = document.getElementById('actualsChart');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+
+  actualsChartInstance = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: ['Fixed Costs', 'Variable Costs', 'Grand Total'],
+      datasets: [
+        {
+          label: 'Budget',
+          data: [0, 0, 0],
+          backgroundColor: 'rgba(54, 176, 235, 0.22)',
+          borderColor:     '#36B0EB',
+          borderWidth:     2,
+          borderRadius:    4,
+        },
+        {
+          label: 'Actuals',
+          data: [0, 0, 0],
+          backgroundColor: 'rgba(240, 125, 74, 0.22)',
+          borderColor:     '#F07D4A',
+          borderWidth:     2,
+          borderRadius:    4,
+        },
+      ],
+    },
+    options: {
+      responsive: true,
+      animation: { duration: 300 },
+      plugins: {
+        legend: {
+          display: true,
+          labels: {
+            font: { family: "'DM Sans', sans-serif", size: 12 },
+            color: '#444',
+            boxWidth: 14,
+          },
+        },
+        tooltip: {
+          callbacks: {
+            label: (ctx) => ` ${ctx.dataset.label}: ${formatUSD(ctx.raw)}`,
+          },
+        },
+      },
+      scales: {
+        y: {
+          beginAtZero: true,
+          ticks: {
+            callback: (val) => formatUSD(val),
+            font: { family: "'DM Mono', monospace", size: 11 },
+            color: '#666',
+          },
+          grid: { color: '#e8e8e8' },
+        },
+        x: {
+          ticks: { font: { size: 12 }, color: '#444' },
+          grid: { display: false },
+        },
+      },
+    },
   });
+}
+
+/** Feature 5 — update actuals chart whenever inputs change. */
+function updateActualsChart(budgetGrand, actualsGrand) {
+  if (!actualsChartInstance) return;
+
+  const overhead      = parseFloat(document.getElementById('overhead-rate')?.value) || 0;
+  const patientsLow   = parseInt(document.getElementById('patients-low')?.value)    || 0;
+  const patientsHigh  = parseInt(document.getElementById('patients-high')?.value)   || 0;
+  const sfRate        = parseFloat(document.getElementById('screen-fail-rate')?.value) || 0;
+  const midPatients   = Math.round(((patientsLow + patientsHigh) / 2) * (1 - sfRate / 100));
+
+  const fixedBudget   = sumInputs('.fixed-budget-input')    || sumInputs('.fixed-cost-input');
+  const varBudget     = (sumInputs('.variable-budget-input') || sumInputs('.variable-cost-input')) * midPatients;
+  const fixedActual   = sumInputs('.fixed-actual-input');
+  const varActual     = sumInputs('.variable-actual-input') * midPatients;
+
+  actualsChartInstance.data.datasets[0].data = [fixedBudget, varBudget, budgetGrand];
+  actualsChartInstance.data.datasets[1].data = [fixedActual, varActual, actualsGrand];
+  actualsChartInstance.update();
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -505,7 +723,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initFinanceForm();
   initFixedCostForm();
   initVariableCostForm();
-  initChart();
-  initSignout();
+  initProjectionChart();
+  initActualsChart();
   setDateMin();
 });
