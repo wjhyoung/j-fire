@@ -4,4 +4,9 @@ This is the repository for J Fire, a Clinical Research Financial Dashboard for s
 
 Project initiated Montreal / Tiohtia'ke March 2026
 
-J Fire takes as its inspiration the 
+## Log ##
+
+TODO (2024-05-14):  - visual CSS overhaul
+                    - complete the budget logic (save a study, cost/budget, projected/actuals)
+                    - AP/AR functionality
+                    - dashboard (3x KPIs)
