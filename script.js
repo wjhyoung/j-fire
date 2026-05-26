@@ -115,7 +115,7 @@ function clearSession() {
 }
 
 /* ═══════════════════════════════════════════════════════════
-   FEATURE 1 — AUTH-GATED UI
+   AUTH-GATED UI
    Show hero + about to everyone.
    Reveal #budget-entry and auth-only nav items only when
    a valid session exists.
@@ -277,7 +277,7 @@ function initAuth() {
 
 /* ═══════════════════════════════════════════════════════════
    PROJECT FORM — Save & Load
-   + Feature 2: auto-save on project-name input (debounced)
+   + Auto-save on project-name input (debounced)
    ═══════════════════════════════════════════════════════════ */
 
 /** Fields that belong to the project setup form. */
@@ -324,7 +324,7 @@ function initProjectForm() {
     } catch { /* no saved project */ }
   }
 
-  /* ── Feature 2: Auto-save when project name is entered ─── */
+  /* ── Auto-save when project name is entered ─── */
   const autoSave = debounce(() => {
     const name = budgetNameEl?.value.trim();
     if (!name) return; // do nothing if field is empty
@@ -554,7 +554,7 @@ function updateBudgetOverview() {
 }
 
 /* ═══════════════════════════════════════════════════════════
-   FEATURE 3 — 5-YEAR BUDGET PROJECTION CHART (Chart.js)
+   5-YEAR BUDGET PROJECTION CHART (Chart.js)
    Auto-updates on every input change via updateBudgetOverview.
    ═══════════════════════════════════════════════════════════ */
 
@@ -618,7 +618,7 @@ function initProjectionChart() {
   });
 }
 
-/** Feature 3 — update projection chart whenever inputs change. */
+/** Update projection chart whenever inputs change. */
 function updateProjectionChart(baseTotal, inflation) {
   if (!budgetChartInstance) return;
   const { totals } = buildProjectionData(baseTotal, inflation);
@@ -627,7 +627,7 @@ function updateProjectionChart(baseTotal, inflation) {
 }
 
 /* ═══════════════════════════════════════════════════════════
-   FEATURE 5 — BUDGET VS ACTUALS CHART (Chart.js)
+   BUDGET VS ACTUALS CHART (Chart.js)
    Compares the current-year budget total with actuals.
    ═══════════════════════════════════════════════════════════ */
 
@@ -698,7 +698,7 @@ function initActualsChart() {
   });
 }
 
-/** Feature 5 — update actuals chart whenever inputs change. */
+/** Update actuals chart whenever inputs change. */
 function updateActualsChart(budgetGrand, actualsGrand) {
   if (!actualsChartInstance) return;
 
