@@ -1,19 +1,26 @@
 /**
  * J Fire — script.js
  * ─────────────────────────────────────────────────────────────
- * Responsibilities:
- *  1. Auth overlay (sign-up / sign-in via localStorage user store)
- *     + Feature 1: budget section hidden until authenticated;
- *       hero & about always visible
- *  2. Project form — save & load via localStorage
- *     + Feature 2: auto-save as soon as the project title is typed
- *  3. Finance overview — live validation + summary display
- *  4. Fixed cost form — live running total (cost | budget | actuals)
- *  5. Variable cost form — live running total (cost | budget | actuals)
- *  6. Budget overview — combined totals with overhead applied
- *  7. 5-year chart — live update via Chart.js (feature 3)
- *     + Feature 3: chart auto-updates on every input change
- *  8. Budget vs Actuals chart — feature 5
+ * Core Functionality:
+ *  1. Authentication System
+ *     - Sign-up / sign-in via localStorage user store
+ *     - Budget section hidden until authenticated
+ *     - Hero & about sections always visible
+ *
+ *  2. Project Management
+ *     - Create and manage projects with localStorage persistence
+ *     - Auto-save feature: projects save when title is typed
+ *
+ *  3. Financial Tracking
+ *     - Live validation and summary display
+ *     - Fixed cost tracking with running totals (cost | budget | actuals)
+ *     - Variable cost tracking with running totals (cost | budget | actuals)
+ *     - Budget overview with overhead calculations
+ *
+ *  4. Data Visualization
+ *     - 5-year chart with live updates via Chart.js
+ *       (auto-updates on every input change)
+ *     - Budget vs Actuals comparison chart
  * ─────────────────────────────────────────────────────────────
  */
 
