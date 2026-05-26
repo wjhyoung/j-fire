@@ -176,14 +176,22 @@ function initAuth() {
   navSigninCta?.addEventListener('click', openOverlay);
   heroSigninCta?.addEventListener('click', openOverlay);
 
-  /** Show or hide overlay + apply UI state based on session. */
+  // Close overlay when clicking the dark backdrop (outside the card itself)
+  overlay?.addEventListener('click', (e) => {
+    if (e.target === overlay) overlay.classList.add('hidden');
+  });
+
+  /**
+   * Apply session state to the UI.
+   * The overlay is NEVER forced open here — guests see the homepage
+   * and choose to sign in via a CTA.  The overlay only closes
+   * automatically once a valid session is established.
+   */
   function checkSession() {
     if (getSession()) {
       overlay.classList.add('hidden');
-    } else {
-      overlay.classList.remove('hidden');
-      setTimeout(() => document.getElementById('signin-username')?.focus(), 50);
     }
+    // No else — guests land on the hero; overlay stays closed until they click Sign in.
     applyAuthState();
   }
 
