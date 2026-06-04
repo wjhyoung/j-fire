@@ -8,5 +8,7 @@ Project initiated Montreal / Tiohtia'ke March 2026
 
 TODO (2024-06-04):  - add graphics to header
                     - insert functionality for adding a custom budget line item
+                    - review and test each function in script.js
+                    - visual design overhaul
                     - AP/AR functionality
                     - dashboard (3x KPIs)
