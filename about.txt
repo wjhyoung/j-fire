@@ -9,10 +9,10 @@ Project initiated Montreal / Tiohtia'ke March 2026
 Done:
 
 - Initialize repository March 2026
+- add graphics to header (2026-06-09)
 
 TODO:  
 
-- add graphics to header
 - insert functionality for adding a custom budget line item
 - review and test each function in script.js
 - visual design overhaul
