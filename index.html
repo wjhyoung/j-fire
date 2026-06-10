@@ -157,13 +157,13 @@
             <!-- Hero -->
             <section id="main-landing" aria-labelledby="hero-heading">
                 <h1 id="hero-heading">Clinical Trial Budget Tool</h1>
-                <p class="hero-lede">
+                <p class="hero-lede nav-guest-only">
                     J Fire is a free, open-source financial dashboard for clinical research.
                     Build a trial budget from scratch, track costs, and visualise a 5-year projection — all in the
                     browser.
                 </p>
 
-                <div class="hero-images" aria-hidden="true">
+                <div class="hero-images nav-guest-only" aria-hidden="true">
                     <img src="Images/trippy-computer.gif" alt="" />
                     <img src="Images/fake-tattoo.jpg" alt="" />
                     <img src="Images/happy-spreadsheet.jpg" alt="" />
@@ -172,7 +172,7 @@
                 <!-- CTA: shown to guests (prompts sign-in), hidden to auth users -->
                 <button id="hero-signin-cta" class="btn-jf-primary nav-guest-only">Get started — sign in</button>
                 <!-- CTA: shown to auth users only -->
-                <a href="#budget-entry" class="btn-jf-primary nav-auth-only hidden">Start budgeting</a>
+                <a href="#budget-entry" class="btn-jf-primary nav-auth-only hidden nav-guest-only">Start budgeting</a>
             </section>
 
             <!-- ════════════════════════════════════
@@ -314,7 +314,7 @@
               · Budget   — the allocated budget amount
               · Actuals  — what was actually spent
             The column headers are rendered above the first row via a sticky header row.
-          -->
+                -->
                     <div class="jf-section">
                         <p class="jf-section-title">03 · Fixed Costs</p>
                         <form id="fixed-cost-form" novalidate>
