@@ -286,6 +286,8 @@ const PROJECT_FIELDS = [
   'study-name', 'disease-name', 'category-name', 'initial-date',
 ];
 
+const TRACKED_PROJECT_INPUTS = '#project-form input, #finance-form input, #fixed-cost-form input, #variable-cost-form input';
+
 function initProjectForm() {
   const form           = document.getElementById('project-form');
   const loadBtn        = document.getElementById('load-project-btn');
@@ -304,6 +306,16 @@ function initProjectForm() {
     if (badgeName) badgeName.textContent = `Saved: ${projectName}`;
   }
 
+  /** Return an object with all tracked form input values. */
+  function collectFormValues() {
+    const values = {};
+    document.querySelectorAll(TRACKED_PROJECT_INPUTS).forEach(input => {
+      if (!input.id) return;
+      values[input.id] = input.value;
+    });
+    return values;
+  }
+
   /** Persist the project object to localStorage. */
   function persistProject(projectName) {
     const project = {};
@@ -312,6 +324,7 @@ function initProjectForm() {
       project[key] = document.getElementById(id)?.value.trim() ?? '';
     });
     project.savedAt = new Date().toISOString();
+    project.formValues = collectFormValues();
     localStorage.setItem(STORAGE_KEYS.PROJECT, JSON.stringify(project));
     return project;
   }
@@ -351,7 +364,9 @@ function initProjectForm() {
     }
   }, 600);
 
-  budgetNameEl?.addEventListener('input', autoSave);
+  document.querySelectorAll(TRACKED_PROJECT_INPUTS).forEach(input => {
+    input.addEventListener('input', autoSave);
+  });
 
   // Manual save (full form validation)
   form?.addEventListener('submit', (e) => {
@@ -373,6 +388,27 @@ function initProjectForm() {
     if (autoSaveInd) { autoSaveInd.textContent = ''; autoSaveInd.className = 'autosave-indicator'; }
   });
 
+  function restoreSavedProject(saved) {
+    if (!saved) return;
+
+    PROJECT_FIELDS.forEach(id => {
+      const key = id.replace(/-([a-z])/g, (_, c) => c.toUpperCase());
+      const el  = document.getElementById(id);
+      if (el && saved[key] !== undefined) el.value = saved[key];
+    });
+
+    if (saved.formValues && typeof saved.formValues === 'object') {
+      Object.entries(saved.formValues).forEach(([id, value]) => {
+        const input = document.getElementById(id);
+        if (input) input.value = value;
+      });
+    }
+
+    unlockForms(saved.budgetName || 'Project');
+    document.querySelectorAll('#finance-form input, #fixed-cost-form input, #variable-cost-form input')
+      .forEach(input => input.dispatchEvent(new Event('input', { bubbles: true })));
+  }
+
   // Load project
   loadBtn?.addEventListener('click', () => {
     hideStatus(statusEl);
@@ -383,20 +419,22 @@ function initProjectForm() {
         return;
       }
 
-      // Map camelCase keys back to hyphen-case input IDs
-      PROJECT_FIELDS.forEach(id => {
-        const key = id.replace(/-([a-z])/g, (_, c) => c.toUpperCase());
-        const el  = document.getElementById(id);
-        if (el && saved[key] !== undefined) el.value = saved[key];
-      });
-
+      restoreSavedProject(saved);
       const savedDate = saved.savedAt ? new Date(saved.savedAt).toLocaleString() : '—';
       showStatus(statusEl, `Loaded "${saved.budgetName}" (last saved ${savedDate}).`);
-      unlockForms(saved.budgetName);
     } catch {
       showStatus(statusEl, 'Could not load project — data may be corrupted.', true);
     }
   });
+
+  function checkExistingProject() {
+    try {
+      const saved = JSON.parse(localStorage.getItem(STORAGE_KEYS.PROJECT) ?? 'null');
+      if (saved?.budgetName) {
+        restoreSavedProject(saved);
+      }
+    } catch { /* no saved project */ }
+  }
 
   checkExistingProject();
 }
