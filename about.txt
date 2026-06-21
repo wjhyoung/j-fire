@@ -10,11 +10,11 @@ Done:
 
 - Initialize repository March 2026
 - add graphics to header (2026-06-09)
+- insert functionality for adding a custom budget line item
+- review and test each function in script.js
 
 TODO:  
 
-- insert functionality for adding a custom budget line item
-- review and test each function in script.js
 - visual design overhaul
 - AP/AR functionality
 - dashboard (3x KPIs)
