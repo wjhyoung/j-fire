@@ -159,7 +159,7 @@
                 <h1 id="hero-heading">Clinical Trial Budget Tool</h1>
                 <p class="hero-lede nav-guest-only">
                     J Fire is a free, open-source financial dashboard for clinical research.
-                    Build a trial budget from scratch, track costs, and visualise a 5-year projection — all in the
+                    Build a trial budget from scratch, track costs, and visualise a multi-year projection — all in the
                     browser.
                 </p>
 
@@ -219,7 +219,7 @@
                                     aria-required="true" autocomplete="off" />
                             </div>
                             <div class="col-md-6">
-                                <label class="form-label" for="initial-date">Date of initial contact <span
+                                <label class="form-label" for="initial-date">Date of initial contact (MM-DD-YYYY) <span
                                         aria-hidden="true">*</span></label>
                                 <input class="form-control" type="date" id="initial-date" name="initial-date" required
                                     aria-required="true" />
@@ -307,13 +307,29 @@
                         </form>
                     </div>
 
+                    <!-- ════════════════════════════════════
+                         BUDGET MODE TOGGLE (Switch)
+                         Toggle between Projected and Actual entry modes
+                         ════════════════════════════════════ -->
+                    <div class="budget-mode-switch-container">
+                        <div class="budget-mode-switch">
+                            <input type="checkbox" id="budget-mode-switch" class="mode-switch-input" />
+                            <label for="budget-mode-switch" class="mode-switch-label">
+                                <span class="mode-projected">Projected</span>
+                                <span class="mode-toggle"></span>
+                                <span class="mode-actual">Actual</span>
+                            </label>
+                        </div>
+                    </div>
+
                     <!-- ── 3. Fixed Costs ───────────────────────── -->
                     <!--
-            Each line item now has four columns:
-              · Projected Cost     — the estimated cost
-              · Projected Budget   — the allocated budget amount
-              · Actual Cost        — what was actually spent
-              · Actual Budget      — the actual budget used
+            Each line item has five columns (hidden based on mode):
+              · Line item name
+              · Projected Cost     — shown in Projected mode
+              · Projected Budget   — shown in Projected mode
+              · Actual Cost        — shown in Actual mode
+              · Actual Budget      — shown in Actual mode
             The column headers are rendered above the first row via a sticky header row.
                 -->
                     <div class="jf-section">
@@ -479,6 +495,40 @@
                                     <input class="form-control fixed-budget-input" type="number" id="labor-budget"
                                         name="labor-budget" min="0" step="0.01" value="0"
                                         aria-label="Labor — actual budget" />
+                                </div>
+                                <!-- Find this section in the Fixed Costs area -->
+                                <div class="cost-grid-row">
+                                    <label class="cost-grid-item-label" for="labor-projected-cost">Labor</label>
+                                    <input class="form-control fixed-projected-cost-input" type="number"
+                                        id="labor-projected-cost" name="labor-projected-cost" min="0" step="0.01"
+                                        value="0" aria-label="Labor — projected cost" />
+                                    <input class="form-control fixed-projected-budget-input" type="number"
+                                        id="labor-projected-budget" name="labor-projected-budget" min="0" step="0.01"
+                                        value="0" aria-label="Labor — projected budget" />
+                                    <input class="form-control fixed-cost-input" type="number" id="labor-cost"
+                                        name="labor-cost" min="0" step="0.01" value="0"
+                                        aria-label="Labor — actual cost" />
+                                    <input class="form-control fixed-budget-input" type="number" id="labor-budget"
+                                        name="labor-budget" min="0" step="0.01" value="0"
+                                        aria-label="Labor — actual budget" />
+                                </div>
+
+                                <!-- Custom Fixed-cost item -->
+                                <div class="cost-grid-row">
+                                    <label class="cost-grid-item-label" for="custom-expense-projected-cost">Custom
+                                        Expense</label>
+                                    <input class="form-control fixed-projected-cost-input" type="number"
+                                        id="custom-expense-projected-cost" name="custom-expense-projected-cost" min="0"
+                                        step="0.01" value="0" aria-label="Custom Expense — projected cost" />
+                                    <input class="form-control fixed-projected-budget-input" type="number"
+                                        id="custom-expense-projected-budget" name="custom-expense-projected-budget"
+                                        min="0" step="0.01" value="0" aria-label="Custom Expense — projected budget" />
+                                    <input class="form-control fixed-cost-input" type="number" id="custom-expense-cost"
+                                        name="custom-expense-cost" min="0" step="0.01" value="0"
+                                        aria-label="Custom Expense — actual cost" />
+                                    <input class="form-control fixed-budget-input" type="number"
+                                        id="custom-expense-budget" name="custom-expense-budget" min="0" step="0.01"
+                                        value="0" aria-label="Custom Expense — actual budget" />
                                 </div>
 
                             </div><!-- /.cost-grid-rows -->
