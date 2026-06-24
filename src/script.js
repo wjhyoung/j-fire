@@ -844,3 +844,17 @@ document.addEventListener('DOMContentLoaded', () => {
     initActualsChart();
     setDateMin();
 });
+
+
+// Collapsable hamburger nav menu functionality
+document.addEventListener('DOMContentLoaded', function() {
+  // Initialize Bootstrap's collapse functionality for navbar
+  const navbarToggler = document.querySelector('.navbar-toggler');
+  const navbarCollapse = document.querySelector('.collapse.navbar-collapse');
+
+  if (navbarToggler && navbarCollapse) {
+    navbarToggler.addEventListener('click', function() {
+      navbarCollapse.classList.toggle('show');
+    });
+  }
+});
