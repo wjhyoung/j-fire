@@ -1,0 +1,213 @@
+<!-- WISHING WELL html file -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wishing Well</title>
+
+    <!-- Favicon -->
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="/styles.css">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Preload critical resources -->
+    <link rel="preload" href="/scripts.js" as="script">
+</head>
+
+<!-- Main content -->
+
+<body>
+    <div class="container">
+        <header>
+            <header class="site-header">
+                <div class="container">
+                    <div class="header-content">
+                        <!-- Brand -->
+                        <a href="/" class="brand">
+                            <span class="logo">YourBrand</span>
+                            <span class="product-name">SaaS</span>
+                        </a>
+
+                        <!-- Navigation -->
+                        <nav class="main-nav">
+                            <ul class="nav-list">
+                                <li class="nav-item"><a href="/" class="nav-link active">Home</a></li>
+                                <li class="nav-item"><a href="/features" class="nav-link">Features</a></li>
+                                <li class="nav-item"><a href="/pricing" class="nav-link">Pricing</a></li>
+                                <li class="nav-item"><a href="/about" class="nav-link">About</a></li>
+                                <li class="nav-item"><a href="/contact" class="nav-link">Contact</a></li>
+                            </ul>
+                        </nav>
+
+                        <!-- Auth buttons -->
+                        <div class="auth-buttons">
+                            <a href="/login" class="btn btn-outline">Log in</a>
+                            <a href="/signup" class="btn btn-primary">Sign up</a>
+                        </div>
+                    </div>
+                </div>
+            </header>
+        </header>
+
+        <!-- Landing page -->
+        <main>
+            <section class="card">
+                <h1>Dream Big</h1>
+                <p>J Fire is a low-data note taking app and prompt constructor.</p>
+                <p>Keep track of text, documents, and images in one convenient location.</p>
+                <p>Ask questions the right way with a user-friendly prompt editor.</p>
+            </section>
+
+            <p id="para">Some text here</p>
+            <button>blue</button>
+            <button>red</button>
+
+            <!-- User authentication -->
+            <section class="card">
+                <h2>Authentication</h2>
+                <p>Enter a user name and a number to use Wishing Well.</p>
+                <form action="" method="post">
+                    <p>
+                        <label for="user-name">Enter a user name</label>
+                        <input type="text" id="user-name" name="user-name">
+                    </p>
+                    <p>
+                        <label for="number">Enter a number between 1 and 100. If your number is even, congratulations!
+                            you will be signed in to Wishing Well! If your number is odd, dang! you didn't succeed, you
+                            are still a guest in this page. Enjoy the about section :p</label>
+                        <input type="text" id="number" name="number">
+                    </p>
+                    <button class="btn" id="sign-in">Submit to sign in :D</button>
+                </form>
+            </section>
+
+            <!-- Authenticated view -->
+            <div id="auth-overlay" class="hidden">
+
+                <!-- Note taking app -->
+                <section class="card">
+                    <h2>Make a wish (aka take a note)</h2>
+                    <form>
+                        <fieldset>
+                            <legend>Type of note</legend>
+                            <p>
+                                <input type="radio" name="note-type" id="type_1" value="text" />
+                                <label for="type_1">Text</label>
+                            </p>
+                            <p>
+                                <input type="radio" name="note-type" id="type_2" value="media" />
+                                <label for="type_2">Media</label>
+                            </p>
+                            <p>
+                                <input type="radio" name="note-type" id="type_3" value="document" />
+                                <label for="type_3">Document</label>
+                            </p>
+                        </fieldset>
+                    </form>
+                    <form action="" method="post">
+                        <p>
+                            <label for="title">Title</label>
+                            <input type="text">
+                        </p>
+                        <p>
+                            <label for="note">Note:</label>
+                            <textarea name="note" id="" maxlength="400"></textarea>
+                        </p>
+                        <p>
+                            <label for="media">Media:</label>
+                            <input type="file" id="docpicker" accept=".doc,.docx,.jpg,.pdf,.rtf,.txt,.png" />
+                        </p>
+                        <button class="btn">Submit!</button>
+                    </form>
+                </section>
+
+                                <!-- Prompt constructor -->
+                <section class="card">
+                    <h2>Prompt Constructor</h2>
+                    <p>Use this form to create a light json LLM prompt</p>
+                    <form id="prompt-form">
+                        <p>
+                            <label for="role">Role</label>
+                            <input type="text" id="role" name="role">
+                        </p>
+                        <p>
+                            <label for="context">Context</label>
+                            <input type="text" id="context" name="context">
+                        </p>
+                        <p>
+                            <label for="task">Task</label>
+                            <input type="text" id="task" name="task">
+                        </p>
+                        <p>
+                            <label for="constraints">Constraints</label>
+                            <input type="text" id="constraints" name="constraints">
+                        </p>
+                        <p>
+                            <label for="tone">Tone</label>
+                            <input type="text" id="tone" name="tone">
+                        </p>
+                        <p>
+                            <label for="output">Output</label>
+                            <input type="text" id="output" name="output">
+                        </p>
+                        <button class="btn" type="submit">Generate prompt</button>
+                    </form>
+
+                    <!-- JSON plain text clippord -->
+                    <div id="json-output" style="margin-top: 20px; padding: 10px; background: #f5f5f5; border-radius: 4px;"></div>
+                </section>
+
+                <script>
+                    document.getElementById('prompt-form').addEventListener('submit', function(e) {
+                        e.preventDefault();
+
+                        // Collect form values
+                        const formData = {
+                            role: document.getElementById('role').value,
+                            context: document.getElementById('context').value,
+                            task: document.getElementById('task').value,
+                            constraints: document.getElementById('constraints').value,
+                            tone: document.getElementById('tone').value,
+                            output: document.getElementById('output').value
+                        };
+
+                        // Convert to JSON string with formatting
+                        const jsonOutput = JSON.stringify(formData, null, 2);
+
+                        // Display in the div
+                        document.getElementById('json-output').textContent = jsonOutput;
+
+                        // Optional: Add copy button functionality
+                        document.getElementById('json-output').innerHTML += `
+                            <button onclick="navigator.clipboard.writeText(this.previousSibling.textContent)"
+                                    style="margin-top: 10px; padding: 5px 10px;">
+                                Copy to Clipboard
+                            </button>
+                        `;
+                    });
+                </script>
+            </div>
+        </main>
+
+        <footer>
+            <p>&copy; 2026 Joel Young. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <!-- Link scripts -->
+    <script src="script.js"></script>
+</body>
+
+</html>
